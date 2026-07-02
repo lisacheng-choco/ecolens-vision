@@ -1,0 +1,253 @@
+[
+  {
+    "key": "cup_noodle",
+    "sourceIds": ["TW-06"],
+    "itemName": "杯麵容器",
+    "overall": "拆開後分類處理",
+    "summary": "先倒除殘液，油污容器不要混入乾淨紙類回收。",
+    "components": [
+      {
+        "id": "broth",
+        "name": "殘留湯汁",
+        "material": "food_liquid",
+        "category": "廚餘或一般垃圾",
+        "destination": "food",
+        "fallbackDestination": "general",
+        "fallbackCondition": "當地不回收液態廚餘時",
+        "action": "先倒除",
+        "warning": "殘液會污染可回收容器"
+      },
+      {
+        "id": "cup",
+        "name": "杯麵紙容器",
+        "material": "coated_paper",
+        "category": "廢紙容器",
+        "destination": "recycle",
+        "fallbackDestination": "general",
+        "fallbackCondition": "內容物或油污無法清除時",
+        "action": "清空內容物、清潔並瀝乾，與廢紙分開回收",
+        "warning": "無法清潔時不要混入回收"
+      },
+      {
+        "id": "film",
+        "name": "塑膠封膜",
+        "material": "plastic_film",
+        "category": "一般垃圾",
+        "destination": "general",
+        "action": "與杯身分開丟棄"
+      }
+    ]
+  },
+  {
+    "key": "drink_cup",
+    "sourceIds": ["TW-06"],
+    "itemName": "飲料杯",
+    "overall": "清空後拆分",
+    "summary": "倒掉殘液，杯身、杯蓋與吸管分開處理。",
+    "components": [
+      {
+        "id": "liquid",
+        "name": "殘液",
+        "material": "drink_liquid",
+        "category": "倒入水槽或廚餘",
+        "destination": "drain",
+        "action": "先清空"
+      },
+      {
+        "id": "cup",
+        "name": "杯身",
+        "material": "plastic_or_paper",
+        "category": "廢塑膠容器或廢紙容器",
+        "destination": "recycle",
+        "fallbackDestination": "general",
+        "fallbackCondition": "無法清洗乾淨或當地不接受該材質回收時",
+        "action": "沖洗瀝乾後分類"
+      },
+      {
+        "id": "straw_lid",
+        "name": "吸管與杯蓋",
+        "material": "plastic",
+        "category": "塑膠類或一般垃圾",
+        "destination": "local_rule",
+        "action": "分開投放"
+      }
+    ]
+  },
+  {
+    "key": "bento_box",
+    "sourceIds": ["TW-06"],
+    "itemName": "便當盒",
+    "overall": "清除廚餘後分類",
+    "summary": "先移除食物殘渣，乾淨塑膠可回收，油污嚴重則作一般垃圾。",
+    "components": [
+      {
+        "id": "food",
+        "name": "食物殘渣",
+        "material": "food",
+        "category": "廚餘",
+        "destination": "food",
+        "action": "先倒除"
+      },
+      {
+        "id": "box",
+        "name": "盒身",
+        "material": "plastic_or_paper",
+        "category": "廢塑膠容器或廢紙容器",
+        "destination": "recycle",
+        "fallbackDestination": "general",
+        "fallbackCondition": "油污嚴重或無法清洗乾淨時",
+        "action": "清洗瀝乾後分類",
+        "warning": "油污嚴重時不要混入回收"
+      }
+    ]
+  },
+  {
+    "key": "plastic_bottle",
+    "sourceIds": ["TW-02", "TW-03", "TW-06"],
+    "itemName": "塑膠瓶",
+    "overall": "清空後資源回收",
+    "summary": "塑膠容器瓶先倒空內容物，簡單清洗並瀝乾後回收。",
+    "components": [
+      {
+        "id": "bottle",
+        "name": "塑膠瓶身",
+        "material": "plastic_container",
+        "category": "廢塑膠容器",
+        "destination": "recycle",
+        "action": "取下瓶蓋與吸管，倒空、簡單清洗並瀝乾",
+        "warning": "化學品、農藥或不明危險物容器不適用此規則"
+      }
+    ]
+  },
+  {
+    "key": "metal_can",
+    "sourceIds": ["TW-02", "TW-03", "TW-06"],
+    "itemName": "鐵鋁罐",
+    "overall": "清空後資源回收",
+    "summary": "食品或飲料用鐵鋁罐清空內容物，簡單清洗瀝乾後回收。",
+    "components": [
+      {
+        "id": "can",
+        "name": "金屬罐身",
+        "material": "aluminum_or_steel",
+        "category": "廢金屬容器",
+        "destination": "recycle",
+        "action": "倒空、簡單清洗並瀝乾",
+        "warning": "噴霧罐、瓦斯罐、油漆罐與化學品罐須使用專用規則"
+      }
+    ]
+  },
+  {
+    "key": "glass_bottle",
+    "sourceIds": ["TW-02", "TW-03", "TW-06"],
+    "itemName": "玻璃瓶",
+    "overall": "清空後資源回收",
+    "summary": "玻璃容器取下瓶蓋，清空並簡單清洗後回收，避免敲破。",
+    "components": [
+      {
+        "id": "bottle",
+        "name": "玻璃瓶身",
+        "material": "glass_container",
+        "category": "廢玻璃容器",
+        "destination": "recycle",
+        "action": "取下瓶蓋，倒空、簡單清洗並瀝乾",
+        "warning": "杯子、燈泡、鏡子及耐熱玻璃不等同玻璃容器"
+      }
+    ]
+  },
+  {
+    "key": "paper_carton",
+    "sourceIds": ["TW-04", "TW-05", "TW-06"],
+    "itemName": "紙容器",
+    "overall": "清潔壓平後資源回收",
+    "summary": "飲料或食品紙容器先清空、清潔並壓平，與一般廢紙分開回收。",
+    "components": [
+      {
+        "id": "carton",
+        "name": "紙容器",
+        "material": "paper_container",
+        "category": "廢紙容器",
+        "destination": "recycle",
+        "fallbackDestination": "local_rule",
+        "fallbackCondition": "有鋁箔內襯、複合材質或無法清除污染時",
+        "action": "倒空、清潔、瀝乾並壓平，與一般紙類分開",
+        "warning": "複合材質與嚴重污染品須依地方清運規定"
+      }
+    ]
+  },
+  {
+    "key": "cardboard",
+    "sourceIds": ["TW-03", "TW-06"],
+    "itemName": "紙箱",
+    "overall": "壓平後資源回收",
+    "summary": "紙箱保持乾燥，移除明顯非紙材並壓平後交付回收。",
+    "components": [
+      {
+        "id": "box",
+        "name": "瓦楞紙箱",
+        "material": "corrugated_cardboard",
+        "category": "廢紙",
+        "destination": "recycle",
+        "fallbackDestination": "general",
+        "fallbackCondition": "嚴重油污、潮濕或無法清潔時",
+        "action": "移除膠帶等明顯非紙材，保持乾燥並壓平"
+      }
+    ]
+  },
+  {
+    "key": "plastic_container",
+    "sourceIds": ["TW-02", "TW-03", "TW-06"],
+    "itemName": "塑膠容器",
+    "overall": "清潔後資源回收",
+    "summary": "塑膠容器用完內容物，去除殘渣並清潔瀝乾後回收。",
+    "components": [
+      {
+        "id": "container",
+        "name": "塑膠容器",
+        "material": "plastic_container",
+        "category": "廢塑膠容器",
+        "destination": "recycle",
+        "fallbackDestination": "general",
+        "fallbackCondition": "嚴重污染且無法清潔時",
+        "action": "用完內容物，去除殘渣、簡單清洗並瀝乾",
+        "warning": "非容器塑膠及特殊材質須依地方規定"
+      }
+    ]
+  },
+  {
+    "key": "battery",
+    "sourceIds": ["TW-02", "TW-03", "TW-06"],
+    "itemName": "電池",
+    "overall": "送至指定回收",
+    "summary": "電池不可混入一般垃圾；依種類交給販賣場所、清潔隊或合格回收點。",
+    "components": [
+      {
+        "id": "battery",
+        "name": "廢電池",
+        "material": "battery",
+        "category": "廢乾電池／充電電池",
+        "destination": "special_collection",
+        "action": "單獨存放並交付指定回收；鋰電池端子貼絕緣膠帶",
+        "warning": "膨脹、破損或發熱時避免擠壓、穿刺與高溫，儘速洽回收單位"
+      }
+    ]
+  },
+  {
+    "key": "small_electronics",
+    "sourceIds": ["TW-02", "TW-03", "TW-06"],
+    "itemName": "小型電子產品",
+    "overall": "確認品項後指定回收",
+    "summary": "電子產品的實際回收管道依品項而異，請交付清潔隊、販賣場所或合格回收點。",
+    "components": [
+      {
+        "id": "device",
+        "name": "電子產品本體",
+        "material": "mixed_electronics",
+        "category": "廢電子電器／廢資訊物品",
+        "destination": "special_collection",
+        "action": "清除個人資料；可安全拆卸時先取出電池並分開回收",
+        "warning": "公告收受品項與尺寸不同，交付前須確認回收單位規定"
+      }
+    ]
+  }
+]

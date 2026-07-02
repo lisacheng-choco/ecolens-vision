@@ -1,0 +1,514 @@
+[
+  {
+    "key": "cup_noodle",
+    "itemName": {
+      "zh-TW": "杯麵容器",
+      "ja-JP": "カップ麺容器"
+    },
+    "overall": {
+      "zh-TW": "依日本規則拆分處理",
+      "ja-JP": "分けて処理"
+    },
+    "summary": {
+      "zh-TW": "先倒除殘湯。受污染容器在日本多數地區會依可燃垃圾或地方塑膠規則處理。",
+      "ja-JP": "残り汁を捨てて、汚れた容器は可燃ごみとして扱う自治体が多いです。"
+    },
+    "components": [
+      {
+        "id": "broth",
+        "name": {
+          "zh-TW": "殘留湯汁",
+          "ja-JP": "残り汁"
+        },
+        "material": "food_liquid",
+        "category": {
+          "zh-TW": "生廚餘 / 可燃",
+          "ja-JP": "生ごみ / 可燃"
+        },
+        "destination": "burnable",
+        "action": {
+          "zh-TW": "先倒除",
+          "ja-JP": "先に捨てる"
+        },
+        "warning": {
+          "zh-TW": "殘湯會污染容器，降低回收可能性",
+          "ja-JP": "容器を汚すとリサイクルできません"
+        }
+      },
+      {
+        "id": "cup",
+        "name": {
+          "zh-TW": "受污染杯身",
+          "ja-JP": "汚れた容器"
+        },
+        "material": "coated_paper_or_plastic",
+        "category": {
+          "zh-TW": "可燃垃圾，或依自治體塑膠規則",
+          "ja-JP": "可燃ごみ"
+        },
+        "destination": "local_rule",
+        "action": {
+          "zh-TW": "依所在地自治體規則投放",
+          "ja-JP": "自治体ルールに従って出す"
+        }
+      },
+      {
+        "id": "film",
+        "name": {
+          "zh-TW": "杯蓋 / 封膜",
+          "ja-JP": "ふた・フィルム"
+        },
+        "material": "plastic_film",
+        "category": {
+          "zh-TW": "プラ 或可燃垃圾",
+          "ja-JP": "プラまたは可燃"
+        },
+        "destination": "local_rule",
+        "action": {
+          "zh-TW": "與杯身分開處理",
+          "ja-JP": "容器と分ける"
+        }
+      }
+    ]
+  },
+  {
+    "key": "drink_cup",
+    "itemName": {
+      "zh-TW": "飲料杯",
+      "ja-JP": "ドリンクカップ"
+    },
+    "overall": {
+      "zh-TW": "依日本規則清空後分別",
+      "ja-JP": "空にして分別"
+    },
+    "summary": {
+      "zh-TW": "先倒掉內容物，再把杯身、杯蓋與吸管分開，依當地プラ / 可燃規則投放。",
+      "ja-JP": "中身を捨て、カップ・ふた・ストローを分けます。"
+    },
+    "components": [
+      {
+        "id": "liquid",
+        "name": {
+          "zh-TW": "飲料殘液",
+          "ja-JP": "飲み残し"
+        },
+        "material": "drink_liquid",
+        "category": {
+          "zh-TW": "倒除 / 生廚餘",
+          "ja-JP": "排水 / 生ごみ"
+        },
+        "destination": "drain",
+        "action": {
+          "zh-TW": "先清空",
+          "ja-JP": "先に空にする"
+        }
+      },
+      {
+        "id": "cup",
+        "name": {
+          "zh-TW": "杯身",
+          "ja-JP": "カップ"
+        },
+        "material": "plastic_or_paper",
+        "category": {
+          "zh-TW": "プラ / 可燃",
+          "ja-JP": "プラ / 可燃"
+        },
+        "destination": "local_rule",
+        "action": {
+          "zh-TW": "清除髒污後依自治體規則投放",
+          "ja-JP": "汚れを落として自治体ルールで出す"
+        }
+      },
+      {
+        "id": "straw_lid",
+        "name": {
+          "zh-TW": "杯蓋與吸管",
+          "ja-JP": "ふた・ストロー"
+        },
+        "material": "plastic",
+        "category": {
+          "zh-TW": "プラ 或可燃垃圾",
+          "ja-JP": "プラまたは可燃"
+        },
+        "destination": "local_rule",
+        "action": {
+          "zh-TW": "分開投放",
+          "ja-JP": "分けて出す"
+        }
+      }
+    ]
+  },
+  {
+    "key": "bento_box",
+    "itemName": {
+      "zh-TW": "便當盒",
+      "ja-JP": "弁当容器"
+    },
+    "overall": {
+      "zh-TW": "依日本規則移除殘渣後分別",
+      "ja-JP": "残飯を除いて分別"
+    },
+    "summary": {
+      "zh-TW": "先移除食物殘渣。乾淨容器可能可依プラ回收，油污嚴重時通常改作可燃垃圾。",
+      "ja-JP": "食べ残しを取り除き、きれいな容器だけ資源として出します。"
+    },
+    "components": [
+      {
+        "id": "food",
+        "name": {
+          "zh-TW": "食物殘渣",
+          "ja-JP": "食べ残し"
+        },
+        "material": "food",
+        "category": {
+          "zh-TW": "生廚餘 / 可燃",
+          "ja-JP": "生ごみ / 可燃"
+        },
+        "destination": "burnable",
+        "action": {
+          "zh-TW": "先移除",
+          "ja-JP": "先に取り除く"
+        }
+      },
+      {
+        "id": "box",
+        "name": {
+          "zh-TW": "盒身",
+          "ja-JP": "容器"
+        },
+        "material": "plastic_or_paper",
+        "category": {
+          "zh-TW": "プラ / 可燃",
+          "ja-JP": "プラ / 可燃"
+        },
+        "destination": "local_rule",
+        "fallbackDestination": "burnable",
+        "fallbackCondition": {
+          "zh-TW": "油污嚴重或無法清洗乾淨時",
+          "ja-JP": "油汚れが強い、または洗えない場合"
+        },
+        "action": {
+          "zh-TW": "清除髒污後依自治體規則投放",
+          "ja-JP": "汚れを落として出す"
+        },
+        "warning": {
+          "zh-TW": "油污嚴重時可能需作可燃垃圾",
+          "ja-JP": "油汚れが強い場合は可燃扱いになることがあります"
+        }
+      }
+    ]
+  },
+  {
+    "key": "plastic_bottle",
+    "sourceIds": ["JP-01", "JP-05", "JP-06", "JP-07"],
+    "itemName": {
+      "zh-TW": "塑膠瓶",
+      "ja-JP": "ペットボトル・プラスチックボトル"
+    },
+    "overall": {
+      "zh-TW": "清空後依自治體規則回收",
+      "ja-JP": "空にして自治体ルールで回収"
+    },
+    "summary": {
+      "zh-TW": "瓶身、瓶蓋與標籤的分類及投放方式由所在地自治體決定。",
+      "ja-JP": "本体、キャップ、ラベルの分別方法は自治体によって異なります。"
+    },
+    "components": [
+      {
+        "id": "bottle",
+        "name": {
+          "zh-TW": "瓶身",
+          "ja-JP": "ボトル本体"
+        },
+        "material": "plastic_container",
+        "category": {
+          "zh-TW": "PET 瓶或塑膠容器",
+          "ja-JP": "ペットボトル・プラスチック容器"
+        },
+        "destination": "local_rule",
+        "action": {
+          "zh-TW": "倒空、輕洗瀝乾，瓶蓋與標籤分開後查詢自治體投放方式",
+          "ja-JP": "中身を空にして軽くすすぎ、キャップとラベルを外して自治体の方法で出す"
+        },
+        "warning": {
+          "zh-TW": "化學品與危險物容器不適用此規則",
+          "ja-JP": "薬品や危険物の容器にはこのルールを適用しないでください"
+        }
+      }
+    ]
+  },
+  {
+    "key": "metal_can",
+    "sourceIds": ["JP-07"],
+    "itemName": {
+      "zh-TW": "鐵鋁罐",
+      "ja-JP": "空き缶"
+    },
+    "overall": {
+      "zh-TW": "清空後依自治體規則回收",
+      "ja-JP": "空にして自治体ルールで回収"
+    },
+    "summary": {
+      "zh-TW": "食品或飲料罐先清空並輕洗，實際投放分類依所在地自治體規定。",
+      "ja-JP": "飲食用の缶は空にして軽くすすぎ、自治体の区分で出します。"
+    },
+    "components": [
+      {
+        "id": "can",
+        "name": {
+          "zh-TW": "金屬罐身",
+          "ja-JP": "缶本体"
+        },
+        "material": "aluminum_or_steel",
+        "category": {
+          "zh-TW": "罐類資源",
+          "ja-JP": "缶類"
+        },
+        "destination": "local_rule",
+        "action": {
+          "zh-TW": "倒空、輕洗瀝乾後依自治體規則投放",
+          "ja-JP": "中身を空にして軽くすすぎ、自治体ルールで出す"
+        },
+        "warning": {
+          "zh-TW": "噴霧罐、瓦斯罐、油漆罐與化學品罐須使用專用規則",
+          "ja-JP": "スプレー缶、ガス缶、塗料缶、薬品缶は別ルールです"
+        }
+      }
+    ]
+  },
+  {
+    "key": "glass_bottle",
+    "sourceIds": ["JP-01", "JP-06", "JP-07"],
+    "itemName": {
+      "zh-TW": "玻璃瓶",
+      "ja-JP": "ガラスびん"
+    },
+    "overall": {
+      "zh-TW": "清空後依自治體規則回收",
+      "ja-JP": "空にして自治体ルールで回収"
+    },
+    "summary": {
+      "zh-TW": "玻璃容器先取下瓶蓋、清空並輕洗，避免打破。",
+      "ja-JP": "ガラスびんはふたを外し、空にして軽くすすぎ、割らずに出します。"
+    },
+    "components": [
+      {
+        "id": "bottle",
+        "name": {
+          "zh-TW": "玻璃瓶身",
+          "ja-JP": "ガラスびん本体"
+        },
+        "material": "glass_container",
+        "category": {
+          "zh-TW": "玻璃容器",
+          "ja-JP": "ガラスびん"
+        },
+        "destination": "local_rule",
+        "action": {
+          "zh-TW": "取下瓶蓋，倒空、輕洗瀝乾後依自治體規則投放",
+          "ja-JP": "ふたを外し、空にして軽くすすぎ、自治体ルールで出す"
+        },
+        "warning": {
+          "zh-TW": "玻璃杯、燈泡與板玻璃不是玻璃瓶",
+          "ja-JP": "コップ、電球、板ガラスはガラスびんではありません"
+        }
+      }
+    ]
+  },
+  {
+    "key": "paper_carton",
+    "sourceIds": ["JP-01", "JP-09"],
+    "itemName": {
+      "zh-TW": "紙容器",
+      "ja-JP": "紙パック"
+    },
+    "overall": {
+      "zh-TW": "清潔後依自治體規則回收",
+      "ja-JP": "洗って自治体ルールで回収"
+    },
+    "summary": {
+      "zh-TW": "紙包裝的回收分類及鋁箔內襯處理方式由自治體決定。",
+      "ja-JP": "紙パックの区分とアルミ付き容器の扱いは自治体によって異なります。"
+    },
+    "components": [
+      {
+        "id": "carton",
+        "name": {
+          "zh-TW": "紙容器",
+          "ja-JP": "紙パック"
+        },
+        "material": "paper_container",
+        "category": {
+          "zh-TW": "紙包裝資源",
+          "ja-JP": "紙パック・紙製容器包装"
+        },
+        "destination": "local_rule",
+        "action": {
+          "zh-TW": "倒空、清洗、打開並晾乾，再依自治體規則投放",
+          "ja-JP": "中身を空にし、洗って開いて乾かし、自治体ルールで出す"
+        },
+        "warning": {
+          "zh-TW": "鋁箔內襯與複合材質可能使用不同分類",
+          "ja-JP": "アルミ付きや複合素材は別区分になる場合があります"
+        }
+      }
+    ]
+  },
+  {
+    "key": "cardboard",
+    "sourceIds": ["JP-09"],
+    "itemName": {
+      "zh-TW": "紙箱",
+      "ja-JP": "段ボール"
+    },
+    "overall": {
+      "zh-TW": "壓平後依自治體規則回收",
+      "ja-JP": "たたんで自治体ルールで回収"
+    },
+    "summary": {
+      "zh-TW": "紙箱保持乾燥、移除明顯非紙材並壓平，依自治體古紙規則投放。",
+      "ja-JP": "段ボールは乾いた状態で異物を外してたたみ、古紙の区分で出します。"
+    },
+    "components": [
+      {
+        "id": "box",
+        "name": {
+          "zh-TW": "瓦楞紙箱",
+          "ja-JP": "段ボール"
+        },
+        "material": "corrugated_cardboard",
+        "category": {
+          "zh-TW": "古紙",
+          "ja-JP": "古紙"
+        },
+        "destination": "local_rule",
+        "action": {
+          "zh-TW": "移除膠帶等明顯非紙材、壓平後依自治體規則投放",
+          "ja-JP": "テープなどの異物を外し、たたんで自治体ルールで出す"
+        },
+        "warning": {
+          "zh-TW": "油污或潮濕紙箱可能不可作古紙回收",
+          "ja-JP": "油汚れや濡れた段ボールは古紙に出せない場合があります"
+        }
+      }
+    ]
+  },
+  {
+    "key": "plastic_container",
+    "sourceIds": ["JP-01", "JP-05", "JP-06"],
+    "itemName": {
+      "zh-TW": "塑膠容器",
+      "ja-JP": "プラスチック容器"
+    },
+    "overall": {
+      "zh-TW": "去除髒污後依自治體規則分類",
+      "ja-JP": "汚れを落として自治体ルールで分別"
+    },
+    "summary": {
+      "zh-TW": "日本各自治體納入回收的塑膠容器與塑膠製品範圍不同。",
+      "ja-JP": "回収対象となるプラスチック容器・製品の範囲は自治体によって異なります。"
+    },
+    "components": [
+      {
+        "id": "container",
+        "name": {
+          "zh-TW": "塑膠容器",
+          "ja-JP": "プラスチック容器"
+        },
+        "material": "plastic_container",
+        "category": {
+          "zh-TW": "プラ或塑膠資源",
+          "ja-JP": "プラ・プラスチック資源"
+        },
+        "destination": "local_rule",
+        "action": {
+          "zh-TW": "用完內容物、去除髒污後依自治體規則投放",
+          "ja-JP": "中身を使い切り、汚れを落として自治体ルールで出す"
+        },
+        "warning": {
+          "zh-TW": "無法去除污染或混合其他材質時分類可能不同",
+          "ja-JP": "汚れが落ちないものや他素材を含むものは区分が異なる場合があります"
+        }
+      }
+    ]
+  },
+  {
+    "key": "battery",
+    "sourceIds": ["JP-08"],
+    "itemName": {
+      "zh-TW": "電池",
+      "ja-JP": "電池"
+    },
+    "overall": {
+      "zh-TW": "依電池種類指定回收",
+      "ja-JP": "電池の種類別に指定回収"
+    },
+    "summary": {
+      "zh-TW": "乾電池、鈕扣電池與充電式鋰電池可能使用不同回收管道，不可混為一類。",
+      "ja-JP": "乾電池、ボタン電池、充電式電池では回収方法が異なります。"
+    },
+    "components": [
+      {
+        "id": "battery",
+        "name": {
+          "zh-TW": "廢電池",
+          "ja-JP": "使用済み電池"
+        },
+        "material": "battery",
+        "category": {
+          "zh-TW": "電池類指定回收",
+          "ja-JP": "電池類の指定回収"
+        },
+        "destination": "special_collection",
+        "action": {
+          "zh-TW": "確認電池種類與自治體指定回收點；可行時將端子絕緣",
+          "ja-JP": "電池の種類と自治体の回収先を確認し、可能なら端子を絶縁する"
+        },
+        "warning": {
+          "zh-TW": "膨脹、破損或發熱時不可擠壓或穿刺，應直接洽自治體",
+          "ja-JP": "膨張、破損、発熱がある場合は押したり穴を開けたりせず自治体に相談してください"
+        }
+      }
+    ]
+  },
+  {
+    "key": "small_electronics",
+    "sourceIds": ["JP-03", "JP-04", "JP-08"],
+    "itemName": {
+      "zh-TW": "小型電子產品",
+      "ja-JP": "小型家電"
+    },
+    "overall": {
+      "zh-TW": "確認品項後指定回收",
+      "ja-JP": "対象品目を確認して指定回収"
+    },
+    "summary": {
+      "zh-TW": "小型家電的收受品項、尺寸與回收方式由自治體選擇。",
+      "ja-JP": "小型家電の対象品目、サイズ、回収方法は自治体が決めます。"
+    },
+    "components": [
+      {
+        "id": "device",
+        "name": {
+          "zh-TW": "小型電子產品本體",
+          "ja-JP": "小型家電本体"
+        },
+        "material": "mixed_electronics",
+        "category": {
+          "zh-TW": "使用完畢小型電子機器",
+          "ja-JP": "使用済小型電子機器"
+        },
+        "destination": "special_collection",
+        "action": {
+          "zh-TW": "清除個人資料；可安全拆卸時取出電池，再確認自治體回收方式",
+          "ja-JP": "個人情報を消去し、安全に外せる電池を取り外して自治体の回収方法を確認する"
+        },
+        "warning": {
+          "zh-TW": "大型家電及不在自治體收受清單的品項須使用其他制度",
+          "ja-JP": "家電4品目や自治体の対象外品は別制度を確認してください"
+        }
+      }
+    ]
+  }
+]

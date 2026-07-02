@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
 import { checkRateLimit, clientKey, rateLimitHeaders } from "@/lib/rateLimit";
+import { makeRequestId, requestLogBase } from "@/lib/requestLog";
 import { parseFeedbackRequest, type FeedbackRequest } from "@/lib/schemas/feedback";
 
 export async function POST(request: Request) {
   const startedAt = Date.now();
+  const requestId = makeRequestId("fdbreq");
+  const baseLog = requestLogBase(request, requestId);
   const limit = 10;
   const rateLimit = checkRateLimit({
     scope: "feedback",
@@ -12,9 +15,21 @@ export async function POST(request: Request) {
     windowMs: 60_000,
     now: startedAt,
   });
-  const headers = rateLimitHeaders(rateLimit, limit, startedAt);
+  const headers = {
+    ...rateLimitHeaders(rateLimit, limit, startedAt),
+    "X-Request-Id": requestId,
+  };
+  console.info(JSON.stringify({
+    event: "feedback.request.started",
+    ...baseLog,
+  }));
   if (!rateLimit.allowed) {
-    console.warn(JSON.stringify({ event: "feedback.rate_limited" }));
+    console.warn(JSON.stringify({
+      event: "feedback.rate_limited",
+      ...baseLog,
+      limit,
+      windowMs: 60_000,
+    }));
     return NextResponse.json({ error: "Too many feedback requests" }, { status: 429, headers });
   }
 
@@ -33,6 +48,7 @@ export async function POST(request: Request) {
     const stored = await storeFeedback(feedback);
     console.info(JSON.stringify({
       event: "feedback.completed",
+      ...baseLog,
       classificationRequestId: feedback.classificationRequestId,
       stored: Boolean(stored),
       duplicate: stored?.duplicate ?? false,
@@ -53,6 +69,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.warn(JSON.stringify({
       event: "feedback.failed",
+      ...baseLog,
       classificationRequestId: feedback.classificationRequestId,
       reason: error instanceof Error ? error.message.slice(0, 120) : "unknown",
       durationMs: Date.now() - startedAt,

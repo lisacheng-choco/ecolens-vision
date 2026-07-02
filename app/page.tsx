@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { clientLog } from "@/lib/clientLog";
 import { consumeSseBuffer } from "@/lib/feedback/consumeSseBuffer";
 import { hasMeaningfulChange } from "@/lib/live/hasMeaningfulChange";
 import type {
@@ -279,26 +280,43 @@ export default function Home() {
     requestRef.current = controller;
     setStatus("classifying");
     setError("");
+    let normalized: { blob: Blob; mimeType: "image/jpeg"; fileName?: string } = {
+      blob,
+      mimeType: blob.type === "image/jpeg" ? "image/jpeg" : "image/jpeg",
+      fileName,
+    };
 
     try {
-      const base64 = await blobToBase64(blob);
+      normalized = captureMode === "upload" ? await normalizeUploadImage(blob, fileName) : normalized;
+      const base64 = await blobToBase64(normalized.blob);
       const response = await fetch("/api/classify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         signal: controller.signal,
         body: JSON.stringify({
           image: {
-            mimeType: blob.type,
+            mimeType: normalized.mimeType,
             base64,
-            fileName,
+            fileName: normalized.fileName ?? fileName,
           },
           capture: { mode: captureMode },
           regionHint: regionRef.current,
           locale: localeRef.current,
         }),
       });
+      const requestId = response.headers.get("x-request-id");
       const payload = await response.json();
-      if (!response.ok) throw new Error(payload.error ?? "分類失敗");
+      if (!response.ok) {
+        clientLog("error", "classification.client_failed", {
+          requestId,
+          status: response.status,
+          captureMode,
+          fileName: normalized.fileName ?? fileName,
+          mimeType: normalized.mimeType,
+          message: payload.error ?? "分類失敗",
+        });
+        throw new Error(payload.error ?? "分類失敗");
+      }
       if (requestVersion !== requestVersionRef.current) return;
       if (forceResult) {
         setResult(payload);
@@ -308,9 +326,23 @@ export default function Home() {
       } else {
         acceptStableResult(payload);
       }
+      clientLog("info", "classification.client_completed", {
+        requestId,
+        status: response.status,
+        captureMode,
+        fileName: normalized.fileName ?? fileName,
+        mimeType: normalized.mimeType,
+        itemCount: payload.items?.length ?? 0,
+      });
       setStatus("classified");
     } catch (classificationError) {
       if (controller.signal.aborted) return;
+      clientLog("error", "classification.client_error", {
+        captureMode,
+        fileName: normalized.fileName ?? fileName,
+        mimeType: normalized.mimeType,
+        message: classificationError instanceof Error ? classificationError.message : "分類失敗",
+      });
       setError(classificationError instanceof Error ? classificationError.message : "分類失敗");
       setStatus("error");
     } finally {
@@ -464,8 +496,24 @@ export default function Home() {
           detectedItemName: selectedItem.item.name,
         }),
       });
+      const requestId = response.headers.get("x-request-id");
       const payload = await response.json();
-      if (!response.ok) throw new Error(payload.error ?? "回饋送出失敗");
+      if (!response.ok) {
+        clientLog("error", "feedback.client_failed", {
+          requestId,
+          classificationRequestId: result.requestId,
+          status: response.status,
+          reason: feedbackReason,
+          message: payload.error ?? "回饋送出失敗",
+        });
+        throw new Error(payload.error ?? "回饋送出失敗");
+      }
+      clientLog("info", "feedback.client_completed", {
+        requestId,
+        classificationRequestId: result.requestId,
+        stored: payload.stored,
+        duplicate: payload.duplicate,
+      });
       setFeedbackMessage(payload.message);
       setFeedbackStored(payload.stored);
       setStatus("classified");
@@ -476,6 +524,11 @@ export default function Home() {
       } catch {}
     } catch (feedbackError) {
       const message = feedbackError instanceof Error ? feedbackError.message : "回饋送出失敗";
+      clientLog("error", "feedback.client_error", {
+        classificationRequestId: result.requestId,
+        reason: feedbackReason,
+        message,
+      });
       setFeedbackMessage(message);
       setFeedbackStored(false);
       setStatus("error");
@@ -489,7 +542,19 @@ export default function Home() {
     const response = await fetch(`/api/feedback/stream?requestId=${encodeURIComponent(requestId)}`, {
       signal: controller.signal,
     });
-    if (!response.ok || !response.body) throw new Error("無法讀取回饋狀態");
+    const streamRequestId = response.headers.get("x-request-id");
+    if (!response.ok || !response.body) {
+      clientLog("error", "feedback.stream_client_failed", {
+        streamRequestId,
+        classificationRequestId: requestId,
+        status: response.status,
+      });
+      throw new Error("無法讀取回饋狀態");
+    }
+    clientLog("info", "feedback.stream_client_started", {
+      streamRequestId,
+      classificationRequestId: requestId,
+    });
 
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
@@ -822,6 +887,58 @@ function blobToBase64(blob: Blob): Promise<string> {
     reader.onerror = () => reject(new Error("無法讀取圖片"));
     reader.readAsDataURL(blob);
   });
+}
+
+async function normalizeUploadImage(blob: Blob, fileName?: string) {
+  if (blob.type === "image/jpeg") {
+    return {
+      blob,
+      mimeType: "image/jpeg" as const,
+      fileName,
+    };
+  }
+
+  const image = await loadImageFromBlob(blob);
+  const canvas = document.createElement("canvas");
+  canvas.width = image.naturalWidth;
+  canvas.height = image.naturalHeight;
+  const context = canvas.getContext("2d");
+  if (!context) throw new Error("無法處理圖片");
+  context.drawImage(image, 0, 0);
+
+  const jpegBlob = await new Promise<Blob | null>((resolve) => {
+    canvas.toBlob(resolve, "image/jpeg", 0.92);
+  });
+  if (!jpegBlob) throw new Error("無法轉換圖片格式");
+
+  return {
+    blob: jpegBlob,
+    mimeType: "image/jpeg" as const,
+    fileName: replaceExtension(fileName ?? "", "jpg") || undefined,
+  };
+}
+
+function loadImageFromBlob(blob: Blob) {
+  return new Promise<HTMLImageElement>((resolve, reject) => {
+    const image = new Image();
+    const objectUrl = URL.createObjectURL(blob);
+    image.onload = () => {
+      URL.revokeObjectURL(objectUrl);
+      resolve(image);
+    };
+    image.onerror = () => {
+      URL.revokeObjectURL(objectUrl);
+      reject(new Error("無法讀取圖片"));
+    };
+    image.src = objectUrl;
+  });
+}
+
+function replaceExtension(fileName: string, nextExtension: string) {
+  if (!fileName) return "";
+  const dotIndex = fileName.lastIndexOf(".");
+  if (dotIndex <= 0) return `${fileName}.${nextExtension}`;
+  return `${fileName.slice(0, dotIndex)}.${nextExtension}`;
 }
 
 async function captureChangedFrame(

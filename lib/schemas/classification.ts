@@ -75,7 +75,7 @@ export type ClassificationResult = {
   locale: Locale;
   items: ClassificationItemResult[];
   model: {
-    provider: "mock" | "gemini";
+    provider: "gemini";
     version: string;
   };
 };

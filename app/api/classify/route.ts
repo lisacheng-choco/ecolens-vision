@@ -2,10 +2,10 @@ import { NextResponse } from "next/server";
 import { checkRateLimit, clientKey, rateLimitHeaders } from "@/lib/rateLimit";
 import { parseClassifyRequest } from "@/lib/schemas/classification";
 import { classifyWithGemini } from "@/lib/vision/geminiProvider";
-import { classifyWithMockProvider } from "@/lib/vision/mockProvider";
 
 export async function POST(request: Request) {
   const startedAt = Date.now();
+  let locale: "zh-TW" | "ja-JP" | "en" = "zh-TW";
   const limit = 20;
   const rateLimit = checkRateLimit({
     scope: "classify",
@@ -24,30 +24,25 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const classifyRequest = parseClassifyRequest(body);
-    let result;
-    let fallbackReason: string | undefined;
-
-    if (process.env.GEMINI_API_KEY) {
-      try {
-        result = await classifyWithGemini(classifyRequest, process.env.GEMINI_API_KEY);
-      } catch (error) {
-        fallbackReason = error instanceof Error ? error.message.slice(0, 120) : "unknown";
-        console.warn(JSON.stringify({
-          event: "classification.fallback",
-          reason: fallbackReason,
-          durationMs: Date.now() - startedAt,
-        }));
-      }
-    } else {
-      fallbackReason = "gemini_not_configured";
+    locale = classifyRequest.locale ?? "zh-TW";
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      console.warn(JSON.stringify({
+        event: "classification.failed",
+        reason: "gemini_not_configured",
+        durationMs: Date.now() - startedAt,
+      }));
+      return NextResponse.json(
+        { error: classifyErrorMessage(locale, "GEMINI_NOT_CONFIGURED") },
+        { status: 503, headers },
+      );
     }
 
-    result ??= classifyWithMockProvider(classifyRequest);
+    const result = await classifyWithGemini(classifyRequest, apiKey);
     console.info(JSON.stringify({
       event: "classification.completed",
       requestId: result.requestId,
       provider: result.model.provider,
-      fallbackReason,
       region: result.region.country,
       mode: classifyRequest.capture.mode,
       itemCount: result.items.length,
@@ -55,14 +50,43 @@ export async function POST(request: Request) {
     }));
     return NextResponse.json(result, { headers });
   } catch (error) {
+    const message = error instanceof Error ? error.message : "Unable to classify image";
+    if (message === "GEMINI_QUOTA_EXCEEDED") {
+      console.warn(JSON.stringify({
+        event: "classification.failed",
+        reason: "gemini_quota_exceeded",
+        durationMs: Date.now() - startedAt,
+      }));
+      return NextResponse.json(
+        { error: classifyErrorMessage(locale, message) },
+        { status: 429, headers },
+      );
+    }
     console.warn(JSON.stringify({
-      event: "classification.rejected",
-      reason: error instanceof Error ? error.message.slice(0, 120) : "unknown",
+      event: "classification.failed",
+      reason: message.slice(0, 120),
       durationMs: Date.now() - startedAt,
     }));
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Unable to classify image" },
-      { status: 400, headers },
+      { error: classifyErrorMessage(locale, message) },
+      { status: 502, headers },
     );
   }
+}
+
+function classifyErrorMessage(locale: string | undefined, code: string) {
+  const isJapanese = locale === "ja-JP";
+  if (code === "GEMINI_NOT_CONFIGURED") {
+    return isJapanese
+      ? "AIサービスが未設定のため、現在は判定できません。"
+      : "AI 服務尚未設定，暫時無法辨識。";
+  }
+  if (code === "GEMINI_QUOTA_EXCEEDED") {
+    return isJapanese
+      ? "AIの利用上限に達しました。しばらくしてからもう一度お試しください。"
+      : "AI 配額已用完，請稍後再試。";
+  }
+  return isJapanese
+    ? "AI 判定に失敗しました。しばらくしてからもう一度お試しください。"
+    : "AI 辨識失敗，請稍後再試。";
 }

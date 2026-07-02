@@ -35,25 +35,6 @@ const rulesByRegion: Record<RegionHint, Rule[]> = {
   jp: jpRules as Rule[],
 };
 
-export function classifyWithMockProvider(request: ClassifyRequest): ClassificationResult {
-  const rules = rulesByRegion[request.regionHint];
-  const fileName = request.image.fileName?.toLowerCase() ?? "";
-  const matchedRules = rules.filter((item) => fileName.includes(item.key));
-  const selectedRules = matchedRules.length > 0 ? matchedRules : [rules[0]];
-
-  return buildClassificationResult(
-    request,
-    selectedRules.map((rule) => ({
-      ruleKey: rule.key as RuleKey,
-      confidence: 0.9,
-    })),
-    {
-      provider: "mock",
-      version: "phase2-fallback",
-    },
-  );
-}
-
 export function buildClassificationResult(
   request: ClassifyRequest,
   detectedItems: Array<{

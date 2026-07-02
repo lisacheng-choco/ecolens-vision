@@ -92,6 +92,19 @@ export async function POST(request: Request) {
         { status: 429, headers },
       );
     }
+    if (message === "GEMINI_TIMEOUT") {
+      console.warn(JSON.stringify({
+        event: "classification.failed",
+        reason: "gemini_timeout",
+        ...baseLog,
+        locale,
+        durationMs: Date.now() - startedAt,
+      }));
+      return NextResponse.json(
+        { error: classifyErrorMessage(locale, message) },
+        { status: 504, headers },
+      );
+    }
     console.warn(JSON.stringify({
       event: "classification.failed",
       ...baseLog,
@@ -117,6 +130,11 @@ function classifyErrorMessage(locale: string | undefined, code: string) {
     return isJapanese
       ? "AIの利用上限に達しました。しばらくしてからもう一度お試しください。"
       : "AI 配額已用完，請稍後再試。";
+  }
+  if (code === "GEMINI_TIMEOUT") {
+    return isJapanese
+      ? "AI応答が遅すぎます。しばらくしてからもう一度お試しください。"
+      : "AI 回應逾時，請稍後再試。";
   }
   return isJapanese
     ? "AI 判定に失敗しました。しばらくしてからもう一度お試しください。"

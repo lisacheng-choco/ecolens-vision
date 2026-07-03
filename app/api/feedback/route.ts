@@ -54,6 +54,8 @@ export async function POST(request: Request) {
       duplicate: stored?.duplicate ?? false,
       region: feedback.region,
       ruleKey: feedback.ruleKey,
+      municipality: feedback.municipality ?? null,
+      strategy: feedback.strategy ?? null,
       durationMs: Date.now() - startedAt,
     }));
     return NextResponse.json({
@@ -105,6 +107,9 @@ async function storeFeedback(
       region: feedback.region,
       rule_key: feedback.ruleKey,
       detected_item_name: feedback.detectedItemName,
+      municipality: feedback.municipality || null,
+      strategy: feedback.strategy || null,
+      evidence_chunk_ids: feedback.evidenceChunkIds,
     }),
   });
 

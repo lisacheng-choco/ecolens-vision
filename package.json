@@ -9,6 +9,7 @@
     "lint": "tsc --noEmit",
     "test": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --experimental-strip-types --test lib/**/*.test.mjs scripts/*.test.mjs",
     "test:smoke": "node scripts/smoke-test.mjs",
+    "eval": "node scripts/evaluate-classification.mjs",
     "review-feedback": "node scripts/review-feedback.mjs",
     "rule-override": "node scripts/rule-override.mjs"
   },

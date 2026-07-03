@@ -4,10 +4,12 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { clientLog } from "@/lib/clientLog";
 import { consumeSseBuffer } from "@/lib/feedback/consumeSseBuffer";
 import { hasMeaningfulChange } from "@/lib/live/hasMeaningfulChange";
+import { municipalities } from "@/lib/schemas/classification";
 import type {
   CaptureMode,
   ClassificationResult,
   Locale,
+  MunicipalityId,
   RegionHint,
 } from "@/lib/schemas/classification";
 import type { FeedbackReason } from "@/lib/schemas/feedback";
@@ -27,6 +29,7 @@ const feedbackReasons: Array<{ value: FeedbackReason; label: string; jaLabel: st
 
 export default function Home() {
   const [region, setRegion] = useState<RegionHint>("tw");
+  const [municipality, setMunicipality] = useState<MunicipalityId | "">("");
   const [locale, setLocale] = useState<Locale>("zh-TW");
   const [mode, setMode] = useState<Mode>("upload");
   const [file, setFile] = useState<File | null>(null);
@@ -62,9 +65,11 @@ export default function Home() {
   const pendingSignatureRef = useRef("");
   const pendingSignatureCountRef = useRef(0);
   const regionRef = useRef(region);
+  const municipalityRef = useRef(municipality);
   const localeRef = useRef(locale);
 
   regionRef.current = region;
+  municipalityRef.current = municipality;
   localeRef.current = locale;
 
   const copy = locale === "ja-JP" ? {
@@ -72,6 +77,8 @@ export default function Home() {
     title: "これはどう捨てる？",
     subtitle: "写真を撮ると、台湾・日本の分別手順がわかります。",
     region: "地域ルール",
+    municipality: "自治体",
+    unspecifiedMunicipality: "未指定・その他",
     language: "表示言語",
     locate: "現在地を確認",
     upload: "写真を選ぶ",
@@ -111,6 +118,8 @@ export default function Home() {
     title: "今天要丟什麼？",
     subtitle: "拍下物品，取得台灣或日本的分類步驟。",
     region: "法規地區",
+    municipality: "城市／縣市",
+    unspecifiedMunicipality: "未指定／其他",
     language: "顯示語言",
     locate: "偵測位置",
     upload: "從相簿選擇",
@@ -219,7 +228,18 @@ export default function Home() {
     requestVersionRef.current += 1;
     requestRef.current?.abort();
     setRegion(nextRegion);
-    setStatus(result ? "classified" : mode === "upload" && file ? "ready" : liveActive ? "ready" : "idle");
+    setMunicipality("");
+    setResult(null);
+    setStatus(mode === "upload" && file ? "ready" : liveActive ? "ready" : "idle");
+  }
+
+  function changeMunicipality(nextMunicipality: MunicipalityId | "") {
+    if (nextMunicipality === municipalityRef.current) return;
+    requestVersionRef.current += 1;
+    requestRef.current?.abort();
+    setMunicipality(nextMunicipality);
+    setResult(null);
+    setStatus(mode === "upload" && file ? "ready" : liveActive ? "ready" : "idle");
   }
 
   function changeLocale(nextLocale: Locale) {
@@ -301,6 +321,7 @@ export default function Home() {
           },
           capture: { mode: captureMode },
           regionHint: regionRef.current,
+          municipality: municipalityRef.current || undefined,
           locale: localeRef.current,
         }),
       });
@@ -494,6 +515,9 @@ export default function Home() {
           region: result.region.country,
           ruleKey: selectedItem.ruleKey,
           detectedItemName: selectedItem.item.name,
+          municipality: result.region.municipality,
+          strategy: selectedItem.strategy,
+          evidenceChunkIds: selectedItem.evidence.map((item) => item.chunkId),
         }),
       });
       const requestId = response.headers.get("x-request-id");
@@ -622,6 +646,19 @@ export default function Home() {
               </button>
             </div>
           </div>
+          <label>
+            <span className="controlLabel">{copy.municipality}</span>
+            <select
+              aria-label={copy.municipality}
+              value={municipality}
+              onChange={(event) => changeMunicipality(event.target.value as MunicipalityId | "")}
+            >
+              <option value="">{copy.unspecifiedMunicipality}</option>
+              {municipalities[region].map(([id, zhLabel, jaLabel]) => (
+                <option key={id} value={id}>{locale === "ja-JP" ? jaLabel : zhLabel}</option>
+              ))}
+            </select>
+          </label>
         </div>
 
         <div className="controls modeControls" aria-label={locale === "ja-JP" ? "確認方法" : "辨識方式"}>
@@ -722,6 +759,7 @@ export default function Home() {
                       ? result.region.country === "JP" ? "日本のルール" : "台湾のルール"
                       : result.region.country === "JP" ? "日本法規" : "台灣法規"}
                   </strong>
+                  {result.region.municipality ? <span>{result.region.municipality}</span> : null}
                   <span>{result.locale === "ja-JP" ? "日本語" : result.locale === "en" ? "English" : "繁體中文"}</span>
                 </div>
                 {result.items.length > 1 ? (
@@ -734,7 +772,7 @@ export default function Home() {
                 ) : null}
                 {result.items.map((classifiedItem, itemIndex) => (
                   <section
-                    className={`classifiedItem ${classifiedItem.ruleKey === "unknown" ? "unknownResult" : ""}`}
+                    className={`classifiedItem ${classifiedItem.strategy === "unresolved" ? "unknownResult" : ""}`}
                     id={`result-item-${itemIndex}`}
                     key={`${classifiedItem.ruleKey}-${itemIndex}`}
                   >
@@ -792,12 +830,22 @@ export default function Home() {
                         </article>
                       ))}
                     </div>
+                    {classifiedItem.evidence.length > 0 ? (
+                      <div className="evidence">
+                        <strong>{locale === "ja-JP" ? "公式情報" : "官方依據"}</strong>
+                        {classifiedItem.evidence.map((source) => (
+                          <a href={source.url} key={source.chunkId} rel="noreferrer" target="_blank">
+                            {source.title}
+                          </a>
+                        ))}
+                      </div>
+                    ) : null}
                   </section>
                 ))}
                 <details className="diagnostics">
                   <summary>{copy.details}</summary>
                   <p>
-                    {result.model.provider} · {result.model.version} · {result.requestId}
+                    {result.model.provider} · {result.model.version} · {result.model.calls} call(s) · {result.requestId}
                   </p>
                 </details>
                 {mode === "upload" ? (
@@ -983,5 +1031,8 @@ function regionFromCoordinates(latitude: number, longitude: number): RegionHint 
 }
 
 function resultSignature(result: ClassificationResult) {
-  return result.items.map((item) => item.ruleKey).sort().join(",");
+  return result.items
+    .map((item) => `${item.strategy}:${item.ruleKey}:${item.item.name.trim().toLocaleLowerCase()}`)
+    .sort()
+    .join(",");
 }

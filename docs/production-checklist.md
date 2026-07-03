@@ -3,7 +3,8 @@
 ## Before deployment
 
 - Run `npm test`, `npm run lint`, and `npm run build`.
-- Set `GEMINI_API_KEY`, `GEMINI_MODEL`, `SUPABASE_URL`, and `SUPABASE_SERVICE_ROLE_KEY` in Vercel Production only.
+- Set `GEMINI_API_KEY`, `GEMINI_MODEL`, `CLASSIFICATION_KNOWLEDGE_FALLBACK`, `SUPABASE_URL`, and `SUPABASE_SERVICE_ROLE_KEY` in Vercel Production only.
+- Keep `CLASSIFICATION_KNOWLEDGE_FALLBACK=false` until the reviewed golden test set passes every safety gate.
 - Run `supabase/schema.sql` and confirm `feedback` has RLS enabled.
 - Confirm the `feedback-images` bucket is private. No browser role receives a Storage policy.
 - Keep `.env` and the Supabase service role key out of Git and client bundles.
@@ -14,6 +15,7 @@
 - Verify HTTPS, camera, geolocation, upload, feedback, SSE, Taiwan rules, and Japan rules.
 - Verify response headers include `X-Frame-Options`, `X-Content-Type-Options`, and `Permissions-Policy`.
 - Verify Vercel logs contain `classification.completed`, `classification.failed`, and `feedback.completed` events without image data or secrets.
+- Compare baseline and hybrid `npm run eval` reports before enabling knowledge fallback.
 
 ## Cost and failure controls
 

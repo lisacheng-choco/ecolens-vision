@@ -45,6 +45,7 @@ export async function POST(request: Request) {
       event: "classification.request.parsed",
       ...baseLog,
       locale,
+      municipality: classifyRequest.municipality ?? null,
       captureMode: classifyRequest.capture.mode,
       imageMime: classifyRequest.image.mimeType,
       base64Length: classifyRequest.image.base64.length,
@@ -74,17 +75,20 @@ export async function POST(request: Request) {
       region: result.region.country,
       mode: classifyRequest.capture.mode,
       itemCount: result.items.length,
+      strategies: [...new Set(result.items.map((item) => item.strategy))],
+      modelCalls: result.model.calls,
       durationMs: Date.now() - startedAt,
     }));
     return NextResponse.json(result, { headers });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unable to classify image";
-    if (message === "GEMINI_QUOTA_EXCEEDED") {
+    if (message.startsWith("GEMINI_RATE_LIMITED: ")) {
       console.warn(JSON.stringify({
         event: "classification.failed",
-        reason: "gemini_quota_exceeded",
+        reason: "gemini_rate_limited",
         ...baseLog,
         locale,
+        geminiMessage: classifyErrorMessage(locale, message),
         durationMs: Date.now() - startedAt,
       }));
       return NextResponse.json(
@@ -121,15 +125,13 @@ export async function POST(request: Request) {
 
 function classifyErrorMessage(locale: string | undefined, code: string) {
   const isJapanese = locale === "ja-JP";
+  if (code.startsWith("GEMINI_RATE_LIMITED: ") || code.startsWith("GEMINI_ERROR: ")) {
+    return code.slice(code.indexOf(": ") + 2);
+  }
   if (code === "GEMINI_NOT_CONFIGURED") {
     return isJapanese
       ? "AIサービスが未設定のため、現在は判定できません。"
       : "AI 服務尚未設定，暫時無法辨識。";
-  }
-  if (code === "GEMINI_QUOTA_EXCEEDED") {
-    return isJapanese
-      ? "AIの利用上限に達しました。しばらくしてからもう一度お試しください。"
-      : "AI 配額已用完，請稍後再試。";
   }
   if (code === "GEMINI_TIMEOUT") {
     return isJapanese

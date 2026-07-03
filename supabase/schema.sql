@@ -15,6 +15,10 @@ alter table public.feedback enable row level security;
 alter table public.feedback
   add column if not exists rule_key text,
   add column if not exists detected_item_name text,
+  add column if not exists municipality text,
+  add column if not exists strategy text
+    check (strategy is null or strategy in ('rule', 'knowledge', 'unresolved')),
+  add column if not exists evidence_chunk_ids text[] not null default '{}',
   add column if not exists status text not null default 'pending'
     check (status in ('pending', 'approved', 'rejected')),
   add column if not exists reviewed_at timestamptz,

@@ -1,6 +1,7 @@
 import jpRules from "@/lib/rules/jp.json";
 import twRules from "@/lib/rules/tw.json";
 import { destinationLabel, type DestinationType } from "@/lib/rules/destinations";
+import { municipalityLabel } from "@/lib/schemas/classification";
 import type {
   ClassifyRequest,
   ClassificationItemResult,
@@ -54,7 +55,7 @@ export function buildClassificationResult(
     requestId: `cls_${Date.now().toString(36)}`,
     region: {
       country: request.regionHint === "jp" ? "JP" : "TW",
-      municipality: request.regionHint === "jp" ? "Demo municipality" : "示範地區",
+      municipality: municipalityLabel(request.regionHint, request.municipality, locale),
       confidence: 1,
     },
     locale,
@@ -73,6 +74,8 @@ function buildItemResult(
   if (rule) {
     return {
       ruleKey: detected.ruleKey,
+      strategy: "rule",
+      evidence: [],
       item: {
         name: detected.itemName ?? text(rule.itemName, locale),
         confidence: detected.confidence,
@@ -108,6 +111,8 @@ function buildItemResult(
 
   return {
     ruleKey: "unknown",
+    strategy: "unresolved",
+    evidence: [],
     item: {
       name: detected.itemName ?? (isJapanese ? "識別できない品目" : "無法確認的物品"),
       confidence: detected.confidence,

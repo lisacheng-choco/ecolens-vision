@@ -1,14 +1,16 @@
 # EcoLens Vision
 
-EcoLens Vision is a Next.js app for AI-powered waste sorting. It supports Taiwan and Japan rules, image upload, live camera capture, feedback submission, and Supabase-backed storage for review data.
+EcoLens Vision is a Next.js app for AI-powered waste sorting. It combines deterministic Taiwan/Japan rules with an optional, source-grounded knowledge fallback.
 
 ## Features
 
 - Taiwan / Japan region switching
+- Municipality-specific knowledge for covered Taiwan and Japan cities
 - Image upload classification
 - Live camera classification
 - Multi-part waste breakdown
 - Error feedback with SSE updates
+- Golden dataset evaluation for safety, coverage, latency, and model calls
 - Rate limiting, structured logs, and a production checklist
 
 ## Tech Stack
@@ -49,11 +51,12 @@ Open `http://localhost:3000`
 
 ## Environment Variables
 
-For local development, you only need the values you plan to use. If `GEMINI_API_KEY` is missing, the classification API falls back to the mock provider.
+`GEMINI_API_KEY` is required for classification. Knowledge fallback is disabled by default until its golden dataset has been reviewed and expanded.
 
 ```bash
 GEMINI_API_KEY=your_key
 GEMINI_MODEL=gemini-3.5-flash
+CLASSIFICATION_KNOWLEDGE_FALLBACK=false
 SUPABASE_URL=https://xxxx.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 E2E_BASE_URL=http://localhost:3000
@@ -70,9 +73,22 @@ npm run start       # start production server
 npm run lint        # TypeScript check
 npm test            # unit tests
 npm run test:smoke  # browser/API smoke test
+npm run eval        # evaluate a running server against evals/golden.json
 npm run review-feedback
 npm run rule-override
 ```
+
+Run baseline and candidate evaluations against separate running deployments:
+
+```bash
+npm run eval -- --label baseline --base-url http://localhost:3000 --output /tmp/baseline.json
+npm run eval -- --label hybrid --base-url https://staging.example.com --output /tmp/hybrid.json
+```
+
+Each `--output <name>.json` also writes `<name>.md`. Use `--markdown-output <path>` to choose a different Markdown path.
+An existing JSON report can be converted without calling the model: `npm run eval -- --from-json /tmp/baseline.json`.
+
+The checked-in dataset is intentionally marked `seed`, not release-ready. See `docs/golden-dataset.md`.
 
 ## Database
 

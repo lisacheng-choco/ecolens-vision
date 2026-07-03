@@ -14,6 +14,9 @@ export type FeedbackRequest = {
   region: "TW" | "JP";
   ruleKey: RuleKey;
   detectedItemName: string;
+  municipality?: string;
+  strategy?: "rule" | "knowledge" | "unresolved";
+  evidenceChunkIds: string[];
 };
 
 const reasons = new Set([
@@ -23,6 +26,7 @@ const reasons = new Set([
   "unclear_instruction",
 ]);
 const ruleKeys = new Set<string>(supportedRuleKeys);
+const strategies = new Set(["rule", "knowledge", "unresolved"]);
 
 export function parseFeedbackRequest(input: unknown): FeedbackRequest {
   if (!input || typeof input !== "object") {
@@ -48,5 +52,15 @@ export function parseFeedbackRequest(input: unknown): FeedbackRequest {
     region: body.region,
     ruleKey: body.ruleKey as RuleKey,
     detectedItemName: body.detectedItemName.slice(0, 80),
+    municipality: typeof body.municipality === "string" ? body.municipality.slice(0, 80) : undefined,
+    strategy: strategies.has(String(body.strategy))
+      ? body.strategy as FeedbackRequest["strategy"]
+      : undefined,
+    evidenceChunkIds: Array.isArray(body.evidenceChunkIds)
+      ? body.evidenceChunkIds
+        .filter((item): item is string => typeof item === "string")
+        .slice(0, 10)
+        .map((item) => item.slice(0, 120))
+      : [],
   };
 }

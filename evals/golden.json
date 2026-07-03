@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "status": "seed",
+  "reviewPolicy": "Do not use as a release gate until reviewed and expanded with novel, hazardous, and municipality-difference cases.",
+  "cases": [
+    {
+      "id": "tw-cup-noodle",
+      "split": "dev",
+      "image": "public/test-images/cup_noodle.jpg",
+      "regionHint": "tw",
+      "locale": "zh-TW",
+      "expectedItems": [
+        {
+          "ruleKey": "cup_noodle",
+          "requiredDestinations": ["food", "recycle", "general"],
+          "forbiddenDestinations": []
+        }
+      ]
+    },
+    {
+      "id": "tw-drink-cup",
+      "split": "dev",
+      "image": "public/test-images/drink_cup.jpg",
+      "regionHint": "tw",
+      "locale": "zh-TW",
+      "expectedItems": [
+        {
+          "ruleKey": "drink_cup",
+          "requiredDestinations": ["drain", "recycle", "local_rule"],
+          "forbiddenDestinations": []
+        }
+      ]
+    },
+    {
+      "id": "jp-bento-box",
+      "split": "test",
+      "image": "public/test-images/bento_box.jpg",
+      "regionHint": "jp",
+      "locale": "ja-JP",
+      "expectedItems": [
+        {
+          "ruleKey": "bento_box",
+          "requiredDestinations": ["burnable", "local_rule"],
+          "forbiddenDestinations": []
+        }
+      ]
+    },
+    {
+      "id": "tw-multi-item",
+      "split": "test",
+      "image": "public/test-images/multi_waste_collage.jpg",
+      "regionHint": "tw",
+      "locale": "zh-TW",
+      "expectedItems": [
+        {
+          "ruleKey": "cup_noodle",
+          "requiredDestinations": ["food", "recycle", "general"],
+          "forbiddenDestinations": []
+        },
+        {
+          "ruleKey": "drink_cup",
+          "requiredDestinations": ["drain", "recycle", "local_rule"],
+          "forbiddenDestinations": []
+        },
+        {
+          "ruleKey": "bento_box",
+          "requiredDestinations": ["food", "recycle"],
+          "forbiddenDestinations": []
+        }
+      ]
+    }
+  ]
+}

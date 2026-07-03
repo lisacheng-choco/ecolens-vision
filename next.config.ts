@@ -8,6 +8,9 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  outputFileTracingIncludes: {
+    "/api/classify": ["./knowledge/*.md"],
+  },
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },

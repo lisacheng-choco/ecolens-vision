@@ -25,12 +25,14 @@ EcoLens Vision is a Next.js app for AI-powered waste sorting. It combines determ
 ## Project Structure
 
 ```text
-app/        Next.js pages and API routes
-lib/        classification, feedback, rules, and rate limit utilities
-public/     test images and static assets
-scripts/    smoke test and feedback review tools
+app/        Next.js UI and API routes
+lib/        browser, classification, feedback, rules, and API utilities
+knowledge/  source-grounded Taiwan and Japan disposal guides
+evals/      versioned classification evaluation datasets
+public/     static assets and evaluation images
+scripts/    evaluation, smoke test, feedback review, and rule tools
 supabase/   database schema
-docs/       deployment and product docs
+docs/       evaluation, deployment, and product documentation
 ```
 
 ## Development

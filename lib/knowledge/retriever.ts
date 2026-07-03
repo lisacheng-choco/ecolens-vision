@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import type { ClassifyRequest, MunicipalityId, RegionHint } from "@/lib/schemas/classification";
+import { municipalityLabel } from "../schemas/classification.ts";
+import type { ClassifyRequest, RegionHint } from "../schemas/classification.ts";
 
 export type KnowledgeChunk = {
   id: string;
@@ -34,24 +35,11 @@ const officialSources: Record<RegionHint, Record<string, string>> = {
   },
 };
 
-const municipalityHeadings: Partial<Record<MunicipalityId, string>> = {
-  taipei: "臺北市",
-  new_taipei: "新北市",
-  taoyuan: "桃園市",
-  taichung: "臺中市",
-  tainan: "臺南市",
-  kaohsiung: "高雄市",
-  keelung: "基隆市",
-  yilan: "宜蘭縣",
-  hualien: "花蓮縣",
-  pingtung: "屏東縣",
-};
-
 let cache: Partial<Record<RegionHint, Array<{ title: string; text: string }>>> = {};
 
 export function retrieveKnowledge(request: Pick<ClassifyRequest, "regionHint" | "municipality">) {
   const sections = loadSections(request.regionHint);
-  const cityHeading = request.municipality ? municipalityHeadings[request.municipality] : undefined;
+  const cityHeading = municipalityLabel(request.regionHint, request.municipality, "zh-TW");
   const selected = sections.filter(({ title }) => {
     if (request.regionHint === "jp") {
       return /執行摘要|跨區制度比較|跨區常見物品分類對照表/.test(title);

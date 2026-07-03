@@ -1,9 +1,16 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  blobToBase64,
+  captureChangedFrame,
+  captureVideoFrame,
+  normalizeUploadImage,
+  regionFromCoordinates,
+} from "@/lib/browserMedia";
 import { clientLog } from "@/lib/clientLog";
+import { classifierCopy } from "@/lib/classifierCopy";
 import { consumeSseBuffer } from "@/lib/feedback/consumeSseBuffer";
-import { hasMeaningfulChange } from "@/lib/live/hasMeaningfulChange";
 import { municipalities } from "@/lib/schemas/classification";
 import type {
   CaptureMode,
@@ -72,89 +79,7 @@ export default function Home() {
   municipalityRef.current = municipality;
   localeRef.current = locale;
 
-  const copy = locale === "ja-JP" ? {
-    eyebrow: "AIごみ分別",
-    title: "これはどう捨てる？",
-    subtitle: "写真を撮ると、台湾・日本の分別手順がわかります。",
-    region: "地域ルール",
-    municipality: "自治体",
-    unspecifiedMunicipality: "未指定・その他",
-    language: "表示言語",
-    locate: "現在地を確認",
-    upload: "写真を選ぶ",
-    live: "カメラで確認",
-    chooseTitle: "写真を選択",
-    chooseHint: "1〜3点を明るい場所で撮影してください",
-    cameraOff: "カメラはまだ起動していません",
-    consent: "画像を Google Gemini に送信することに同意します。無料プランの内容は Google 製品の改善に使われる場合があります。",
-    consentHint: "続けるには画像送信への同意が必要です。",
-    classify: "分別を確認",
-    classifying: "品目と地域ルールを確認中…",
-    start: "カメラを起動",
-    stop: "停止",
-    capture: "撮影",
-    emptyTitle: "結果はここに表示されます",
-    emptyUpload: "写真を選ぶと、捨て先と準備手順を表示します。",
-    emptyLive: "カメラを起動すると、自動で品目を確認します。",
-    feedbackTitle: "判定を報告",
-    feedbackItem: "報告する品目",
-    correctLabel: "正しい分類",
-    note: "補足説明",
-    submit: "送信",
-    close: "閉じる",
-    again: "別の写真を確認",
-    detected: "検出",
-    itemUnit: "件",
-    parts: "分別する部分",
-    partUnit: "個",
-    dispose: "捨て先",
-    prepare: "処理",
-    exception: "例外",
-    lowConfidence: "不確かなため、角度を変えてもう一度撮影してください",
-    report: "報告",
-    details: "認識情報",
-  } : {
-    eyebrow: "AI 垃圾分類",
-    title: "今天要丟什麼？",
-    subtitle: "拍下物品，取得台灣或日本的分類步驟。",
-    region: "法規地區",
-    municipality: "城市／縣市",
-    unspecifiedMunicipality: "未指定／其他",
-    language: "顯示語言",
-    locate: "偵測位置",
-    upload: "從相簿選擇",
-    live: "開啟相機",
-    chooseTitle: "選擇垃圾圖片",
-    chooseHint: "建議一次放入 1–3 件物品，並保持光線充足",
-    cameraOff: "相機尚未啟動",
-    consent: "我同意將影像傳送至 Google Gemini；免費方案內容可能用於改善 Google 產品。",
-    consentHint: "請先同意影像傳送，才能開始辨識。",
-    classify: "查看分類方式",
-    classifying: "正在確認物品與當地規則…",
-    start: "開啟相機",
-    stop: "停止",
-    capture: "拍攝確認",
-    emptyTitle: "分類結果會顯示在這裡",
-    emptyUpload: "選擇圖片後，我們會整理丟棄位置與處理步驟。",
-    emptyLive: "啟動相機後，系統會自動辨識物品。",
-    feedbackTitle: "回報判斷",
-    feedbackItem: "回報的垃圾項目",
-    correctLabel: "正確分類",
-    note: "補充說明",
-    submit: "送出",
-    close: "關閉",
-    again: "再辨識一張",
-    detected: "辨識到",
-    itemUnit: "項",
-    parts: "需要拆分",
-    partUnit: "個部分",
-    dispose: "丟到",
-    prepare: "處理",
-    exception: "例外",
-    lowConfidence: "辨識不確定，請換個角度再拍一次",
-    report: "回報",
-    details: "辨識資訊",
-  };
+  const copy = classifierCopy(locale);
   const countryLabel = region === "tw" ? (locale === "ja-JP" ? "台湾" : "台灣") : "日本";
   const canClassify = Boolean(
     status !== "classifying" && status !== "feedbackSubmitting" && file && geminiConsent,
@@ -926,108 +851,6 @@ export default function Home() {
       </section>
     </main>
   );
-}
-
-function blobToBase64(blob: Blob): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(String(reader.result).split(",")[1] ?? "");
-    reader.onerror = () => reject(new Error("無法讀取圖片"));
-    reader.readAsDataURL(blob);
-  });
-}
-
-async function normalizeUploadImage(blob: Blob, fileName?: string) {
-  if (blob.type === "image/jpeg") {
-    return {
-      blob,
-      mimeType: "image/jpeg" as const,
-      fileName,
-    };
-  }
-
-  const image = await loadImageFromBlob(blob);
-  const canvas = document.createElement("canvas");
-  canvas.width = image.naturalWidth;
-  canvas.height = image.naturalHeight;
-  const context = canvas.getContext("2d");
-  if (!context) throw new Error("無法處理圖片");
-  context.drawImage(image, 0, 0);
-
-  const jpegBlob = await new Promise<Blob | null>((resolve) => {
-    canvas.toBlob(resolve, "image/jpeg", 0.92);
-  });
-  if (!jpegBlob) throw new Error("無法轉換圖片格式");
-
-  return {
-    blob: jpegBlob,
-    mimeType: "image/jpeg" as const,
-    fileName: replaceExtension(fileName ?? "", "jpg") || undefined,
-  };
-}
-
-function loadImageFromBlob(blob: Blob) {
-  return new Promise<HTMLImageElement>((resolve, reject) => {
-    const image = new Image();
-    const objectUrl = URL.createObjectURL(blob);
-    image.onload = () => {
-      URL.revokeObjectURL(objectUrl);
-      resolve(image);
-    };
-    image.onerror = () => {
-      URL.revokeObjectURL(objectUrl);
-      reject(new Error("無法讀取圖片"));
-    };
-    image.src = objectUrl;
-  });
-}
-
-function replaceExtension(fileName: string, nextExtension: string) {
-  if (!fileName) return "";
-  const dotIndex = fileName.lastIndexOf(".");
-  if (dotIndex <= 0) return `${fileName}.${nextExtension}`;
-  return `${fileName.slice(0, dotIndex)}.${nextExtension}`;
-}
-
-async function captureChangedFrame(
-  video: HTMLVideoElement,
-  lastFrame: { current: Uint8ClampedArray | null },
-) {
-  if (video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA || !video.videoWidth || !video.videoHeight) {
-    return null;
-  }
-
-  const comparisonCanvas = document.createElement("canvas");
-  comparisonCanvas.width = 32;
-  comparisonCanvas.height = 32;
-  const comparisonContext = comparisonCanvas.getContext("2d", { willReadFrequently: true });
-  if (!comparisonContext) return null;
-  comparisonContext.drawImage(video, 0, 0, 32, 32);
-  const pixels = comparisonContext.getImageData(0, 0, 32, 32).data;
-  if (!hasMeaningfulChange(lastFrame.current, pixels)) return null;
-  lastFrame.current = new Uint8ClampedArray(pixels);
-
-  return captureVideoFrame(video, 640, 0.65);
-}
-
-async function captureVideoFrame(video: HTMLVideoElement, maxSize: number, quality: number) {
-  if (video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA || !video.videoWidth || !video.videoHeight) {
-    return null;
-  }
-
-  const scale = Math.min(1, maxSize / Math.max(video.videoWidth, video.videoHeight));
-  const canvas = document.createElement("canvas");
-  canvas.width = Math.round(video.videoWidth * scale);
-  canvas.height = Math.round(video.videoHeight * scale);
-  canvas.getContext("2d")?.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-  return new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/jpeg", quality));
-}
-
-function regionFromCoordinates(latitude: number, longitude: number): RegionHint | null {
-  if (latitude >= 21.8 && latitude <= 25.4 && longitude >= 119.3 && longitude <= 122.1) return "tw";
-  if (latitude >= 24 && latitude <= 46 && longitude >= 122.5 && longitude <= 146) return "jp";
-  return null;
 }
 
 function resultSignature(result: ClassificationResult) {

@@ -2,6 +2,7 @@ import jpRules from "@/lib/rules/jp.json";
 import twRules from "@/lib/rules/tw.json";
 import { destinationLabel, type DestinationType } from "@/lib/rules/destinations";
 import { municipalityLabel } from "@/lib/schemas/classification";
+import { uniqueRuleItems } from "@/lib/vision/uniqueRuleItems";
 import type {
   ClassifyRequest,
   ClassificationItemResult,
@@ -46,10 +47,6 @@ export function buildClassificationResult(
   model: ClassificationResult["model"],
 ): ClassificationResult {
   const locale = request.locale ?? "zh-TW";
-  const seen = new Set<RuleKey>();
-  const uniqueItems = detectedItems.filter(({ ruleKey }) => (
-    ruleKey === "unknown" || (!seen.has(ruleKey) && Boolean(seen.add(ruleKey)))
-  ));
 
   return {
     requestId: `cls_${Date.now().toString(36)}`,
@@ -59,7 +56,7 @@ export function buildClassificationResult(
       confidence: 1,
     },
     locale,
-    items: uniqueItems.map((detected) => buildItemResult(request, detected)),
+    items: uniqueRuleItems(detectedItems).map((detected) => buildItemResult(request, detected)),
     model,
   };
 }

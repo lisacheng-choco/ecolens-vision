@@ -18,6 +18,10 @@
 
 Release gates are zero hazardous false-safe results, zero unsupported assertive answers, zero invalid evidence, and zero municipality leakage. Compare item recall, destination accuracy, unresolved coverage, latency, and model calls only after those gates pass.
 
+## Eval runtime constraint
+
+For this repo's eval runs, assume Gemini Free Tier can hit a practical ceiling of 5 requests per minute per project. Treat `429` or quota-exhausted responses as a rate-limit event, do not loop-retry inside the same minute, and continue with the next case after cooldown.
+
 ## Adding a case
 
 Add the image under `public/test-images`, document its license, and append a manifest entry:

@@ -78,6 +78,11 @@ export type ClassificationComponent = {
 export type ClassificationItemResult = {
   ruleKey: RuleKey;
   strategy: "rule" | "knowledge" | "unresolved";
+  rule?: {
+    scope: "country" | "municipality";
+    scopeLabel: string;
+    reviewedAt?: string;
+  };
   evidence: Array<{
     chunkId: string;
     title: string;

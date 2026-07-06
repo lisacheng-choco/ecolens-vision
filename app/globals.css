@@ -187,6 +187,53 @@ h3 {
   padding: 12px 14px;
 }
 
+.pocHidden {
+  display: none !important;
+}
+
+.pocBanner {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  border: 1px solid rgb(22 116 90 / 24%);
+  border-radius: 14px;
+  background: rgb(22 116 90 / 7%);
+  margin-bottom: 16px;
+  padding: 12px 14px;
+}
+
+.pocBanner div {
+  display: grid;
+  flex: 0 0 auto;
+}
+
+.pocBanner strong {
+  color: var(--accent-dark);
+}
+
+.pocBanner span,
+.pocBanner p {
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.pocBanner p {
+  margin: 0;
+}
+
+.ruleScope {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  margin: -6px 0 18px;
+}
+
+.ruleScope strong {
+  color: var(--ink);
+}
+
 .controlLabel {
   display: block;
   margin-bottom: 4px;
@@ -763,6 +810,12 @@ h3 {
 @media (max-width: 780px) {
   .shell {
     padding: 24px 14px 110px;
+  }
+
+  .pocBanner {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
   }
 
   .topbar {

@@ -35,8 +35,8 @@ const feedbackReasons: Array<{ value: FeedbackReason; label: string; jaLabel: st
 ];
 
 export default function Home() {
-  const [region, setRegion] = useState<RegionHint>("tw");
-  const [municipality, setMunicipality] = useState<MunicipalityId | "">("");
+  const [region, setRegion] = useState<RegionHint>("jp");
+  const [municipality, setMunicipality] = useState<MunicipalityId | "">("osaka");
   const [locale, setLocale] = useState<Locale>("zh-TW");
   const [mode, setMode] = useState<Mode>("upload");
   const [file, setFile] = useState<File | null>(null);
@@ -546,7 +546,15 @@ export default function Home() {
           </div>
         </header>
 
-        <div className="controlRow settingsBar">
+        <aside className="pocBanner" aria-label="大阪市 POC 適用範圍">
+          <div>
+            <strong>大阪市 POC</strong>
+            <span>繁體中文 · 家庭日常垃圾</span>
+          </div>
+          <p>目前僅涵蓋常見家戶垃圾；資料來源為大阪市，本測試服務並非大阪市官方提供。</p>
+        </aside>
+
+        <div className="controlRow settingsBar pocHidden">
           <div>
             <p className="controlLabel">{copy.region}</p>
             <div className="controls" aria-label={copy.region}>
@@ -586,7 +594,7 @@ export default function Home() {
           </label>
         </div>
 
-        <div className="controls modeControls" aria-label={locale === "ja-JP" ? "確認方法" : "辨識方式"}>
+        <div className="controls modeControls pocHidden" aria-label={locale === "ja-JP" ? "確認方法" : "辨識方式"}>
           <button aria-pressed={mode === "upload"} className={mode === "upload" ? "selected" : ""} type="button" onClick={() => changeMode("upload")}>
             {copy.upload}
           </button>
@@ -727,6 +735,21 @@ export default function Home() {
                       </div>
                     </div>
                     <p className="summary">{classifiedItem.overall.summary}</p>
+                    {classifiedItem.rule ? (
+                      <p className="ruleScope">
+                        <strong>{classifiedItem.rule.scopeLabel}</strong>
+                        <span>
+                          {classifiedItem.rule.scope === "municipality"
+                            ? locale === "ja-JP" ? "自治体ルール" : "自治體規則"
+                            : locale === "ja-JP" ? "国の原則" : "國家原則"}
+                        </span>
+                        {classifiedItem.rule.reviewedAt ? (
+                          <span>
+                            {locale === "ja-JP" ? "確認日" : "審核日期"}：{classifiedItem.rule.reviewedAt}
+                          </span>
+                        ) : null}
+                      </p>
+                    ) : null}
                     <div className="components">
                       {classifiedItem.components.map((component) => (
                         <article

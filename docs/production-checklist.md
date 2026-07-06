@@ -20,6 +20,7 @@
 ## Cost and failure controls
 
 - Set Gemini project quota and billing alerts in Google Cloud; application logs cannot replace provider-side budget alerts.
+- For evals on Gemini Free Tier, keep bursts under 5 requests per minute per project. If a run hits `429`, stop retry loops and rerun after cooldown.
 - Classification is limited to 20 requests per client per minute; feedback to 10; SSE to 30.
 - Confirm Gemini quota exhaustion returns a clear user-facing error instead of a blank failure.
 - Review provider and fallback counts in Vercel logs after each release.

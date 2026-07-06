@@ -1,0 +1,678 @@
+[
+  {
+    "key": "cup_noodle",
+    "municipality": "osaka",
+    "reviewedAt": "2026-07-06",
+    "sources": [
+      {
+        "title": "大阪市：プラスチック資源の分け方の例",
+        "url": "https://www.city.osaka.lg.jp/kankyo/page/0000008025.html"
+      }
+    ],
+    "examples": ["塑膠杯麵容器", "保麗龍泡麵碗", "紙杯麵容器", "塑膠即食湯杯"],
+    "itemName": {
+      "zh-TW": "杯麵容器",
+      "ja-JP": "カップ麺容器"
+    },
+    "overall": {
+      "zh-TW": "清空後拆分",
+      "ja-JP": "中身を空にして分別"
+    },
+    "summary": {
+      "zh-TW": "大阪市將塑膠外膜、調味包、塑膠或保麗龍容器列為塑膠資源；紙製杯身或杯蓋列為普通垃圾，髒污無法去除的塑膠也改丟普通垃圾。",
+      "ja-JP": "外装フィルム、調味料袋、プラスチック・発泡スチロール容器はプラスチック資源です。紙製の容器・ふたと、汚れが取れないプラスチックは普通ごみです。"
+    },
+    "components": [
+      {
+        "id": "food",
+        "name": {
+          "zh-TW": "殘湯與食物殘渣",
+          "ja-JP": "残り汁・食べ残し"
+        },
+        "material": "food",
+        "category": {
+          "zh-TW": "普通垃圾",
+          "ja-JP": "普通ごみ"
+        },
+        "destination": "general",
+        "action": {
+          "zh-TW": "先食用完；殘渣充分瀝乾後丟普通垃圾",
+          "ja-JP": "中身を使い切り、残りは水分をよく切って普通ごみへ"
+        }
+      },
+      {
+        "id": "cup_film",
+        "name": {
+          "zh-TW": "若為塑膠／保麗龍：杯身、外膜與調味包",
+          "ja-JP": "プラスチック・発泡スチロールの場合：容器、外装フィルム・調味料袋"
+        },
+        "material": "plastic_or_foam",
+        "category": {
+          "zh-TW": "塑膠資源",
+          "ja-JP": "プラスチック資源"
+        },
+        "destination": "recycle",
+        "fallbackDestination": "general",
+        "fallbackCondition": {
+          "zh-TW": "髒污或內容物無法去除時",
+          "ja-JP": "汚れや中身が取れない場合"
+        },
+        "action": {
+          "zh-TW": "清空、去除殘渣並輕洗後直接放入透明或半透明袋",
+          "ja-JP": "中身を空にして汚れを落とし、透明・半透明の袋へ直接入れる"
+        }
+      },
+      {
+        "id": "paper_lid",
+        "name": {
+          "zh-TW": "若為紙製：杯身或杯蓋",
+          "ja-JP": "紙製の場合：容器・ふた"
+        },
+        "material": "coated_paper",
+        "category": {
+          "zh-TW": "普通垃圾",
+          "ja-JP": "普通ごみ"
+        },
+        "destination": "general",
+        "action": {
+          "zh-TW": "與塑膠部件分開丟普通垃圾",
+          "ja-JP": "プラスチック部分と分けて普通ごみへ"
+        }
+      }
+    ]
+  },
+  {
+    "key": "drink_cup",
+    "municipality": "osaka",
+    "reviewedAt": "2026-07-06",
+    "sources": [
+      {
+        "title": "大阪市：プラスチック資源の分け方の例",
+        "url": "https://www.city.osaka.lg.jp/kankyo/page/0000008025.html"
+      },
+      {
+        "title": "大阪市：品目別収集区分一覧表（50音順）",
+        "url": "https://www.city.osaka.lg.jp/kankyo/page/0000201907.html"
+      }
+    ],
+    "examples": ["塑膠外帶飲料杯", "塑膠優格杯", "紙咖啡杯"],
+    "itemName": {
+      "zh-TW": "飲料杯",
+      "ja-JP": "飲料カップ"
+    },
+    "overall": {
+      "zh-TW": "清空後依材質拆分",
+      "ja-JP": "中身を空にして素材別に分別"
+    },
+    "summary": {
+      "zh-TW": "純塑膠杯、杯蓋與吸管清潔後丟塑膠資源；紙杯及髒污無法去除的塑膠丟普通垃圾。",
+      "ja-JP": "プラスチック製のカップ、ふた、ストローは汚れを落としてプラスチック資源へ。紙コップと汚れが取れないものは普通ごみです。"
+    },
+    "components": [
+      {
+        "id": "liquid",
+        "name": {
+          "zh-TW": "飲料殘液",
+          "ja-JP": "飲み残し"
+        },
+        "material": "drink_liquid",
+        "category": {
+          "zh-TW": "先清空",
+          "ja-JP": "先に空にする"
+        },
+        "destination": "drain",
+        "action": {
+          "zh-TW": "先清空內容物",
+          "ja-JP": "先に中身を空にする"
+        }
+      },
+      {
+        "id": "plastic_parts",
+        "name": {
+          "zh-TW": "若為塑膠：杯身、杯蓋與吸管",
+          "ja-JP": "プラスチック製の場合：カップ・ふた・ストロー"
+        },
+        "material": "plastic",
+        "category": {
+          "zh-TW": "塑膠資源",
+          "ja-JP": "プラスチック資源"
+        },
+        "destination": "recycle",
+        "fallbackDestination": "general",
+        "fallbackCondition": {
+          "zh-TW": "髒污無法去除，或不是純塑膠材質時",
+          "ja-JP": "汚れが取れない、またはプラスチック単一素材でない場合"
+        },
+        "action": {
+          "zh-TW": "拆開並去除髒污後丟塑膠資源",
+          "ja-JP": "分けて汚れを落とし、プラスチック資源へ"
+        }
+      },
+      {
+        "id": "paper_cup",
+        "name": {
+          "zh-TW": "若為紙製：杯身",
+          "ja-JP": "紙製の場合：カップ"
+        },
+        "material": "coated_paper",
+        "category": {
+          "zh-TW": "普通垃圾",
+          "ja-JP": "普通ごみ"
+        },
+        "destination": "general",
+        "action": {
+          "zh-TW": "充分瀝乾後丟普通垃圾",
+          "ja-JP": "水分を切って普通ごみへ"
+        }
+      }
+    ]
+  },
+  {
+    "key": "bento_box",
+    "municipality": "osaka",
+    "reviewedAt": "2026-07-06",
+    "sources": [
+      {
+        "title": "大阪市：プラスチック資源の分け方の例",
+        "url": "https://www.city.osaka.lg.jp/kankyo/page/0000008025.html"
+      }
+    ],
+    "examples": ["超商塑膠便當盒", "塑膠熟食托盤", "塑膠外帶餐盒"],
+    "itemName": {
+      "zh-TW": "塑膠便當盒",
+      "ja-JP": "プラスチック製弁当容器"
+    },
+    "overall": {
+      "zh-TW": "清除殘渣後回收",
+      "ja-JP": "残りを除いて資源へ"
+    },
+    "summary": {
+      "zh-TW": "塑膠餐盒與托盤清空、洗去髒污後丟塑膠資源；油污或內容物無法去除時丟普通垃圾。",
+      "ja-JP": "プラスチック製容器・トレイは中身と汚れを落としてプラスチック資源へ。汚れが取れない場合は普通ごみです。"
+    },
+    "components": [
+      {
+        "id": "food",
+        "name": {
+          "zh-TW": "食物殘渣",
+          "ja-JP": "食べ残し"
+        },
+        "material": "food",
+        "category": {
+          "zh-TW": "普通垃圾",
+          "ja-JP": "普通ごみ"
+        },
+        "destination": "general",
+        "action": {
+          "zh-TW": "充分瀝乾後丟普通垃圾",
+          "ja-JP": "水分をよく切って普通ごみへ"
+        }
+      },
+      {
+        "id": "box",
+        "name": {
+          "zh-TW": "塑膠盒與上蓋",
+          "ja-JP": "プラスチック容器・ふた"
+        },
+        "material": "plastic",
+        "category": {
+          "zh-TW": "塑膠資源",
+          "ja-JP": "プラスチック資源"
+        },
+        "destination": "recycle",
+        "fallbackDestination": "general",
+        "fallbackCondition": {
+          "zh-TW": "油污或內容物無法去除時",
+          "ja-JP": "油汚れや中身が取れない場合"
+        },
+        "action": {
+          "zh-TW": "清空並輕洗後丟塑膠資源",
+          "ja-JP": "中身を空にして軽く洗い、プラスチック資源へ"
+        }
+      }
+    ]
+  },
+  {
+    "key": "plastic_bottle",
+    "municipality": "osaka",
+    "reviewedAt": "2026-07-06",
+    "sources": [
+      {
+        "title": "大阪市：資源ごみ（缶、びん、ペットボトル、金属製の生活用品及びスプレー缶・カセットボンベ類）の出し方",
+        "url": "https://www.city.osaka.lg.jp/kankyo/page/0000369352.html"
+      }
+    ],
+    "examples": ["PET寶特瓶裝水", "PET飲料瓶", "PET醬油瓶"],
+    "itemName": {
+      "zh-TW": "PET 寶特瓶",
+      "ja-JP": "ペットボトル"
+    },
+    "overall": {
+      "zh-TW": "拆蓋、輕洗後資源回收",
+      "ja-JP": "キャップを外し、すすいで資源ごみへ"
+    },
+    "summary": {
+      "zh-TW": "有 PET 回收標誌的飲料、酒類或醬油瓶屬資源垃圾；塑膠瓶蓋與標籤另丟塑膠資源。",
+      "ja-JP": "PETマークのある飲料・酒類・しょうゆ用ボトルは資源ごみ、プラスチック製キャップとラベルはプラスチック資源です。"
+    },
+    "components": [
+      {
+        "id": "bottle",
+        "name": {
+          "zh-TW": "PET 瓶身",
+          "ja-JP": "ペットボトル本体"
+        },
+        "material": "pet",
+        "category": {
+          "zh-TW": "資源垃圾",
+          "ja-JP": "資源ごみ"
+        },
+        "destination": "recycle",
+        "action": {
+          "zh-TW": "清空、輕洗、盡量壓扁後丟資源垃圾",
+          "ja-JP": "中身を空にして軽く洗い、できるだけつぶして資源ごみへ"
+        }
+      },
+      {
+        "id": "cap_label",
+        "name": {
+          "zh-TW": "塑膠瓶蓋與標籤",
+          "ja-JP": "プラスチック製キャップ・ラベル"
+        },
+        "material": "plastic",
+        "category": {
+          "zh-TW": "塑膠資源",
+          "ja-JP": "プラスチック資源"
+        },
+        "destination": "recycle",
+        "action": {
+          "zh-TW": "可取下者先取下，另丟塑膠資源",
+          "ja-JP": "外してプラスチック資源へ"
+        },
+        "warning": {
+          "zh-TW": "化學品或不明內容物容器不適用此規則",
+          "ja-JP": "薬品や内容物不明の容器には適用しません"
+        }
+      }
+    ]
+  },
+  {
+    "key": "metal_can",
+    "municipality": "osaka",
+    "reviewedAt": "2026-07-06",
+    "sources": [
+      {
+        "title": "大阪市：資源ごみ（缶、びん、ペットボトル、金属製の生活用品及びスプレー缶・カセットボンベ類）の出し方",
+        "url": "https://www.city.osaka.lg.jp/kankyo/page/0000369352.html"
+      },
+      {
+        "title": "大阪市：品目別収集区分一覧表（50音順）",
+        "url": "https://www.city.osaka.lg.jp/kankyo/page/0000201907.html"
+      }
+    ],
+    "examples": ["鋁製飲料罐", "鐵製飲料罐", "食品罐頭", "空餅乾鐵罐"],
+    "itemName": {
+      "zh-TW": "金屬罐",
+      "ja-JP": "空き缶"
+    },
+    "overall": {
+      "zh-TW": "清空、輕洗後資源回收",
+      "ja-JP": "中身を空にして資源ごみへ"
+    },
+    "summary": {
+      "zh-TW": "一斗罐以下的空罐清空、輕洗後丟資源垃圾；噴霧罐與卡式瓦斯罐必須另外裝袋。",
+      "ja-JP": "一斗缶以下の空き缶は中身を空にして軽く洗い資源ごみへ。スプレー缶・カセットボンベは別袋です。"
+    },
+    "components": [
+      {
+        "id": "can",
+        "name": {
+          "zh-TW": "空金屬罐",
+          "ja-JP": "空き缶"
+        },
+        "material": "aluminum_or_steel",
+        "category": {
+          "zh-TW": "資源垃圾",
+          "ja-JP": "資源ごみ"
+        },
+        "destination": "recycle",
+        "fallbackDestination": "general",
+        "fallbackCondition": {
+          "zh-TW": "非危險內容物殘留且無法清除時",
+          "ja-JP": "危険物ではない中身が残り、落とせない場合"
+        },
+        "action": {
+          "zh-TW": "清空、輕洗、盡量壓扁後丟資源垃圾",
+          "ja-JP": "中身を空にして軽く洗い、できるだけつぶして資源ごみへ"
+        },
+        "warning": {
+          "zh-TW": "噴霧罐與卡式瓦斯罐須用完內容物、不可打孔，並用透明或半透明袋與其他資源垃圾分袋；LP 瓦斯鋼瓶、有害藥品罐、油漆罐及未清空危險容器不適用本規則，請洽販售業者或大阪市。",
+          "ja-JP": "スプレー缶・カセットボンベは使い切り、穴を開けず、透明・半透明の別袋へ。LPガスボンベ、有害薬品・塗料缶、危険な中身が残る容器は対象外です。販売店等または大阪市に相談してください。"
+        }
+      }
+    ]
+  },
+  {
+    "key": "glass_bottle",
+    "municipality": "osaka",
+    "reviewedAt": "2026-07-06",
+    "sources": [
+      {
+        "title": "大阪市：資源ごみ（缶、びん、ペットボトル、金属製の生活用品及びスプレー缶・カセットボンベ類）の出し方",
+        "url": "https://www.city.osaka.lg.jp/kankyo/page/0000369352.html"
+      },
+      {
+        "title": "大阪市：品目別収集区分一覧表（50音順）",
+        "url": "https://www.city.osaka.lg.jp/kankyo/page/0000201907.html"
+      }
+    ],
+    "examples": ["玻璃飲料瓶", "玻璃調味料瓶", "玻璃化妝品瓶"],
+    "itemName": {
+      "zh-TW": "玻璃瓶",
+      "ja-JP": "空きびん"
+    },
+    "overall": {
+      "zh-TW": "取下瓶蓋、輕洗後資源回收",
+      "ja-JP": "ふたを外し、すすいで資源ごみへ"
+    },
+    "summary": {
+      "zh-TW": "一升瓶以下的飲料、食品、日用品或化妝品玻璃空瓶屬資源垃圾；玻璃杯、花瓶與玻璃板不適用。",
+      "ja-JP": "一升びん以下の飲料・食品・日用品・化粧品の空きびんは資源ごみです。コップ、花瓶、板ガラスは対象外です。"
+    },
+    "components": [
+      {
+        "id": "bottle",
+        "name": {
+          "zh-TW": "玻璃瓶身",
+          "ja-JP": "ガラスびん本体"
+        },
+        "material": "glass_container",
+        "category": {
+          "zh-TW": "資源垃圾",
+          "ja-JP": "資源ごみ"
+        },
+        "destination": "recycle",
+        "action": {
+          "zh-TW": "取下瓶蓋，清空並輕洗後丟資源垃圾",
+          "ja-JP": "ふたを外し、中身を空にして軽く洗い資源ごみへ"
+        },
+        "warning": {
+          "zh-TW": "玻璃杯、花瓶、玻璃板、燈泡及破損玻璃不是玻璃瓶，請查品項表；有害藥品容器請洽販售業者。",
+          "ja-JP": "コップ、花瓶、板ガラス、電球、割れたガラスは空きびんではありません。品目表を確認し、有害薬品容器は販売店等へ相談してください。"
+        }
+      }
+    ]
+  },
+  {
+    "key": "paper_carton",
+    "municipality": "osaka",
+    "reviewedAt": "2026-07-06",
+    "sources": [
+      {
+        "title": "大阪市：古紙・衣類の分別収集",
+        "url": "https://www.city.osaka.lg.jp/kankyo/page/0000369372.html"
+      },
+      {
+        "title": "大阪市：品目別収集区分一覧表（50音順）",
+        "url": "https://www.city.osaka.lg.jp/kankyo/page/0000201907.html"
+      }
+    ],
+    "examples": ["牛奶紙盒", "果汁紙盒", "有鋁箔內襯的酒類紙盒"],
+    "itemName": {
+      "zh-TW": "紙盒",
+      "ja-JP": "紙パック"
+    },
+    "overall": {
+      "zh-TW": "清洗、攤開、晾乾後回收",
+      "ja-JP": "洗って開き、乾かして古紙へ"
+    },
+    "summary": {
+      "zh-TW": "無鋁箔內襯的紙盒清洗、攤開、晾乾後按紙盒類回收；有鋁箔內襯或嚴重髒污者丟普通垃圾。",
+      "ja-JP": "アルミ箔なしの紙パックは洗って開き、乾かして紙パックへ。アルミ箔付きやひどく汚れたものは普通ごみです。"
+    },
+    "components": [
+      {
+        "id": "carton",
+        "name": {
+          "zh-TW": "紙盒",
+          "ja-JP": "紙パック"
+        },
+        "material": "paper_container",
+        "category": {
+          "zh-TW": "古紙・衣類：紙盒",
+          "ja-JP": "古紙・衣類：紙パック"
+        },
+        "destination": "recycle",
+        "fallbackDestination": "general",
+        "fallbackCondition": {
+          "zh-TW": "有鋁箔內襯，或髒污無法去除時",
+          "ja-JP": "アルミ箔付き、または汚れが取れない場合"
+        },
+        "action": {
+          "zh-TW": "清洗、攤開、晾乾後與其他古紙分開投放",
+          "ja-JP": "洗って開き、乾かして他の古紙と分けて出す"
+        }
+      }
+    ]
+  },
+  {
+    "key": "cardboard",
+    "municipality": "osaka",
+    "reviewedAt": "2026-07-06",
+    "sources": [
+      {
+        "title": "大阪市：古紙・衣類の分別収集",
+        "url": "https://www.city.osaka.lg.jp/kankyo/page/0000369372.html"
+      }
+    ],
+    "examples": ["宅配瓦楞紙箱", "搬家紙箱", "家電瓦楞紙包裝"],
+    "itemName": {
+      "zh-TW": "瓦楞紙箱",
+      "ja-JP": "段ボール"
+    },
+    "overall": {
+      "zh-TW": "去除異物、折平並綁好回收",
+      "ja-JP": "異物を外し、折りたたんで束ねる"
+    },
+    "summary": {
+      "zh-TW": "瓦楞紙箱去除膠帶與宅配單等異物，折平後約十張一束；油污或潮濕嚴重者丟普通垃圾。",
+      "ja-JP": "粘着テープや宅配伝票等を外し、折りたたんで10枚程度をひもで束ねます。ひどい油汚れや濡れたものは普通ごみです。"
+    },
+    "components": [
+      {
+        "id": "box",
+        "name": {
+          "zh-TW": "瓦楞紙箱",
+          "ja-JP": "段ボール"
+        },
+        "material": "corrugated_cardboard",
+        "category": {
+          "zh-TW": "古紙・衣類：瓦楞紙箱",
+          "ja-JP": "古紙・衣類：段ボール"
+        },
+        "destination": "recycle",
+        "fallbackDestination": "general",
+        "fallbackCondition": {
+          "zh-TW": "嚴重油污、潮濕或無法清潔時",
+          "ja-JP": "ひどい油汚れ、濡れ、または清潔にできない場合"
+        },
+        "action": {
+          "zh-TW": "去除膠帶與宅配單，折平並以繩綁成約十張一束",
+          "ja-JP": "テープや宅配伝票を外し、折りたたんで10枚程度をひもで束ねる"
+        }
+      }
+    ]
+  },
+  {
+    "key": "plastic_container",
+    "municipality": "osaka",
+    "reviewedAt": "2026-07-06",
+    "sources": [
+      {
+        "title": "大阪市：プラスチック資源の分け方の例",
+        "url": "https://www.city.osaka.lg.jp/kankyo/page/0000008025.html"
+      }
+    ],
+    "examples": ["塑膠蛋盒", "塑膠豆腐盒", "零食塑膠袋", "冷凍食品塑膠袋", "洗髮精補充袋", "塑膠洗劑瓶", "全塑膠牙刷", "全塑膠湯匙"],
+    "itemName": {
+      "zh-TW": "塑膠容器或製品",
+      "ja-JP": "プラスチック容器・製品"
+    },
+    "overall": {
+      "zh-TW": "清空、去污後回收",
+      "ja-JP": "中身と汚れを除いて資源へ"
+    },
+    "summary": {
+      "zh-TW": "塑膠容器包裝，以及全由塑膠製成且每邊不超過 30 公分的製品，清潔後屬塑膠資源；混合材質、超尺寸或髒污無法去除者不適用。",
+      "ja-JP": "プラスチック製容器包装と、100%プラスチック素材で一辺30cm以下の製品はプラスチック資源です。複合素材、規定超過、汚れが取れないものは対象外です。"
+    },
+    "components": [
+      {
+        "id": "plastic",
+        "name": {
+          "zh-TW": "塑膠容器、包裝或純塑膠製品",
+          "ja-JP": "プラスチック容器包装・製品"
+        },
+        "material": "plastic",
+        "category": {
+          "zh-TW": "塑膠資源",
+          "ja-JP": "プラスチック資源"
+        },
+        "destination": "recycle",
+        "fallbackDestination": "general",
+        "fallbackCondition": {
+          "zh-TW": "髒污無法去除、含金屬等其他材質，或不符合尺寸與厚度限制時",
+          "ja-JP": "汚れが取れない、金属等の他素材を含む、または寸法・厚さの基準外の場合"
+        },
+        "action": {
+          "zh-TW": "用完內容物、去除髒污後直接放入透明或半透明袋",
+          "ja-JP": "中身を使い切り、汚れを落として透明・半透明の袋へ直接入れる"
+        },
+        "warning": {
+          "zh-TW": "電池、電子產品、打火機、刀片、噴霧罐與卡式瓦斯罐不可混入塑膠資源。",
+          "ja-JP": "電池、電子機器、ライター、刃物、スプレー缶、カセットボンベは混ぜないでください。"
+        }
+      }
+    ]
+  },
+  {
+    "key": "battery",
+    "municipality": "osaka",
+    "reviewedAt": "2026-07-06",
+    "sources": [
+      {
+        "title": "大阪市：乾電池・リチウムイオン電池等・使用済小型家電等の拠点回収",
+        "url": "https://www.city.osaka.lg.jp/kankyo/page/0000009050.html"
+      }
+    ],
+    "examples": ["筒型鹼性乾電池", "筒型錳乾電池", "鋰離子充電電池", "行動電源", "內建充電電池的無線耳機"],
+    "itemName": {
+      "zh-TW": "電池與行動電源",
+      "ja-JP": "電池・モバイルバッテリー"
+    },
+    "overall": {
+      "zh-TW": "依電池種類指定回收",
+      "ja-JP": "種類別に指定回収へ"
+    },
+    "summary": {
+      "zh-TW": "筒型鹼性與錳乾電池優先投入指定回收箱；若無法送達才可丟普通垃圾。鋰離子等充電電池、行動電源及無法拆電池的小型裝置交環境事業中心據點或預約到府回收。",
+      "ja-JP": "アルカリ・マンガン筒形乾電池は指定回収箱へ。持ち込めない場合のみ普通ごみへ出せます。充電式電池、モバイルバッテリー、電池を外せない小型機器は環境事業センターの拠点回収または訪問回収へ。"
+    },
+    "components": [
+      {
+        "id": "dry_battery",
+        "name": {
+          "zh-TW": "筒型鹼性或錳乾電池",
+          "ja-JP": "アルカリ・マンガン筒形乾電池"
+        },
+        "material": "battery",
+        "category": {
+          "zh-TW": "指定回收",
+          "ja-JP": "指定回収"
+        },
+        "destination": "special_collection",
+        "fallbackDestination": "general",
+        "fallbackCondition": {
+          "zh-TW": "無法送至大阪市指定回收點時",
+          "ja-JP": "大阪市の指定回収場所へ持ち込めない場合"
+        },
+        "action": {
+          "zh-TW": "送至大阪市指定回收箱或環境事業中心",
+          "ja-JP": "大阪市の指定回収箱または環境事業センターへ"
+        },
+        "warning": {
+          "zh-TW": "鈕扣電池與充電電池不適用此乾電池規則。",
+          "ja-JP": "ボタン電池と充電式電池には、この乾電池ルールを適用しません。"
+        }
+      },
+      {
+        "id": "rechargeable_battery",
+        "name": {
+          "zh-TW": "充電電池、行動電源或內建電池裝置",
+          "ja-JP": "充電式電池・モバイルバッテリー・電池内蔵機器"
+        },
+        "material": "lithium_ion_battery",
+        "category": {
+          "zh-TW": "鋰離子電池等指定回收",
+          "ja-JP": "リチウムイオン電池等回収"
+        },
+        "destination": "special_collection",
+        "action": {
+          "zh-TW": "送至環境事業中心據點，或向所屬環境事業中心申請到府回收",
+          "ja-JP": "環境事業センターの回収拠点へ持ち込むか、担当センターへ訪問回収を申し込む"
+        },
+        "warning": {
+          "zh-TW": "不可混入普通垃圾、資源垃圾或塑膠資源。膨脹或變形品不要投入無人回收箱，請直接交環境事業中心人員；切勿擠壓、拆解或刺穿。",
+          "ja-JP": "普通ごみ、資源ごみ、プラスチック資源に混ぜないでください。膨張・変形品は無人回収箱に入れず、環境事業センター職員へ直接渡し、圧迫・分解・穴あけをしないでください。"
+        }
+      }
+    ]
+  },
+  {
+    "key": "small_electronics",
+    "municipality": "osaka",
+    "reviewedAt": "2026-07-06",
+    "sources": [
+      {
+        "title": "大阪市：乾電池・リチウムイオン電池等・使用済小型家電等の拠点回収",
+        "url": "https://www.city.osaka.lg.jp/kankyo/page/0000009050.html"
+      }
+    ],
+    "examples": ["舊手機", "數位相機", "有線耳機", "電子體溫計", "吹風機"],
+    "itemName": {
+      "zh-TW": "小型電子產品",
+      "ja-JP": "使用済小型家電"
+    },
+    "overall": {
+      "zh-TW": "確認尺寸與品項後指定回收",
+      "ja-JP": "対象品目・サイズを確認して回収へ"
+    },
+    "summary": {
+      "zh-TW": "大阪市指定品項且能放入 15×30 公分投入口的小型家電可投入回收箱；家電四品目、燈泡與清單外品項不適用。",
+      "ja-JP": "大阪市の対象品目で15×30cmの投入口に入る使用済小型家電は回収箱へ。家電4品目、電球、対象外品は回収箱に入れられません。"
+    },
+    "components": [
+      {
+        "id": "device",
+        "name": {
+          "zh-TW": "小型電子產品本體",
+          "ja-JP": "使用済小型家電本体"
+        },
+        "material": "mixed_electronics",
+        "category": {
+          "zh-TW": "使用完畢小型電子產品回收",
+          "ja-JP": "使用済小型家電回収"
+        },
+        "destination": "special_collection",
+        "action": {
+          "zh-TW": "刪除個人資料；可安全拆卸時先取出電池，再送至指定回收箱",
+          "ja-JP": "個人情報を消去し、安全に外せる電池は外して指定回収箱へ"
+        },
+        "warning": {
+          "zh-TW": "內建充電電池且無法拆卸者，依鋰離子電池等回收方式交付；電視、冷氣、冰箱、洗衣機與烘衣機不可投入。",
+          "ja-JP": "充電式電池を外せない製品はリチウムイオン電池等回収へ。テレビ、エアコン、冷蔵庫、洗濯機・衣類乾燥機は投入できません。"
+        }
+      }
+    ]
+  }
+]

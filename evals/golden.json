@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "status": "seed",
   "reviewPolicy": "Do not use as a release gate until reviewed and expanded with novel, hazardous, and municipality-difference cases.",
   "cases": [
@@ -66,6 +66,51 @@
           "ruleKey": "bento_box",
           "requiredDestinations": ["food", "recycle"],
           "forbiddenDestinations": []
+        }
+      ]
+    },
+    {
+      "id": "osaka-cup-noodle",
+      "split": "dev",
+      "image": "public/test-images/cup_noodle.jpg",
+      "regionHint": "jp",
+      "municipality": "osaka",
+      "locale": "zh-TW",
+      "expectedItems": [
+        {
+          "ruleKey": "cup_noodle",
+          "requiredDestinations": ["general", "recycle"],
+          "forbiddenDestinations": ["local_rule"]
+        }
+      ]
+    },
+    {
+      "id": "osaka-drink-cup",
+      "split": "dev",
+      "image": "public/test-images/drink_cup.jpg",
+      "regionHint": "jp",
+      "municipality": "osaka",
+      "locale": "zh-TW",
+      "expectedItems": [
+        {
+          "ruleKey": "drink_cup",
+          "requiredDestinations": ["drain", "recycle", "general"],
+          "forbiddenDestinations": ["local_rule"]
+        }
+      ]
+    },
+    {
+      "id": "osaka-bento-box",
+      "split": "test",
+      "image": "public/test-images/bento_box.jpg",
+      "regionHint": "jp",
+      "municipality": "osaka",
+      "locale": "zh-TW",
+      "expectedItems": [
+        {
+          "ruleKey": "bento_box",
+          "requiredDestinations": ["general", "recycle"],
+          "forbiddenDestinations": ["local_rule"]
         }
       ]
     }

@@ -16,7 +16,8 @@ const classification = await fetch(`${baseUrl}/api/classify`, {
   body: JSON.stringify({
     image: { mimeType: "image/jpeg", base64: image, fileName: "cup_noodle.jpg" },
     capture: { mode: "upload" },
-    regionHint: "tw",
+    regionHint: "jp",
+    municipality: "osaka",
     locale: "zh-TW",
   }),
 });
@@ -24,6 +25,9 @@ assert.equal(classification.status, 200);
 const result = await classification.json();
 assert.equal(result.items?.[0]?.ruleKey, "cup_noodle");
 assert.ok(result.items[0].components.length > 1);
+assert.equal(result.items[0].rule?.scope, "municipality");
+assert.equal(result.items[0].rule?.scopeLabel, "大阪市");
+assert.ok(result.items[0].evidence.length > 0);
 
 const stream = await fetch(
   `${baseUrl}/api/feedback/stream?requestId=${encodeURIComponent(result.requestId)}`,

@@ -107,6 +107,13 @@ function scoreCase(goldenCase, result, latencyMs) {
     if (item.strategy === "knowledge" && (!item.evidence?.length || item.evidence.some((source) => !isHttpUrl(source.url)))) {
       safetyViolations.push(`${item.item?.name ?? "unknown"}: knowledge answer has invalid evidence`);
     }
+    if (goldenCase.municipality && item.strategy === "rule" && (
+      item.rule?.scope !== "municipality" ||
+      !item.evidence?.length ||
+      item.evidence.some((source) => !isHttpUrl(source.url))
+    )) {
+      safetyViolations.push(`${item.item?.name ?? "unknown"}: municipality rule has invalid scope or evidence`);
+    }
     if (item.strategy === "unresolved" && item.components?.length) {
       safetyViolations.push(`${item.item?.name ?? "unknown"}: unresolved answer has components`);
     }

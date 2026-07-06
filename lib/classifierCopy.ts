@@ -4,7 +4,7 @@ const copy = {
   "ja-JP": {
     eyebrow: "AIごみ分別",
     title: "これはどう捨てる？",
-    subtitle: "写真を撮ると、台湾・日本の分別手順がわかります。",
+    subtitle: "写真を撮ると、大阪市の家庭ごみ分別手順がわかります。",
     region: "地域ルール",
     municipality: "自治体",
     unspecifiedMunicipality: "未指定・その他",
@@ -46,7 +46,7 @@ const copy = {
   "zh-TW": {
     eyebrow: "AI 垃圾分類",
     title: "今天要丟什麼？",
-    subtitle: "拍下物品，取得台灣或日本的分類步驟。",
+    subtitle: "拍下物品，取得大阪市家戶垃圾的分類步驟。",
     region: "法規地區",
     municipality: "城市／縣市",
     unspecifiedMunicipality: "未指定／其他",

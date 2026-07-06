@@ -1,4 +1,5 @@
 import jpRules from "@/lib/rules/jp.json";
+import osakaRules from "@/lib/rules/osaka.json";
 import twRules from "@/lib/rules/tw.json";
 import { destinationLabel, type DestinationType } from "@/lib/rules/destinations";
 import { municipalityLabel } from "@/lib/schemas/classification";
@@ -8,6 +9,7 @@ import type {
   ClassificationItemResult,
   ClassificationResult,
   Locale,
+  MunicipalityId,
   RegionHint,
   RuleKey,
 } from "@/lib/schemas/classification";
@@ -16,6 +18,12 @@ type LocalizedText = string | Partial<Record<Locale, string>>;
 type Rule = {
   key: string;
   sourceIds?: string[];
+  municipality?: MunicipalityId;
+  reviewedAt?: string;
+  sources?: Array<{
+    title: string;
+    url: string;
+  }>;
   itemName: LocalizedText;
   overall: LocalizedText;
   summary: LocalizedText;
@@ -66,13 +74,31 @@ function buildItemResult(
   detected: Parameters<typeof buildClassificationResult>[1][number],
 ): ClassificationItemResult {
   const locale = request.locale ?? "zh-TW";
-  const rule = rulesByRegion[request.regionHint].find((item) => item.key === detected.ruleKey);
+  const rules = request.regionHint === "jp" && request.municipality === "osaka"
+    ? osakaRules as Rule[]
+    : rulesByRegion[request.regionHint];
+  const rule = rules.find((item) => item.key === detected.ruleKey);
 
   if (rule) {
+    const scopeLabel = rule.municipality
+      ? municipalityLabel(request.regionHint, rule.municipality, locale) ?? rule.municipality
+      : request.regionHint === "jp"
+        ? locale === "ja-JP" ? "日本の原則" : "日本國家原則"
+        : locale === "ja-JP" ? "台湾の原則" : "台灣國家原則";
+
     return {
       ruleKey: detected.ruleKey,
       strategy: "rule",
-      evidence: [],
+      rule: {
+        scope: rule.municipality ? "municipality" : "country",
+        scopeLabel,
+        reviewedAt: rule.reviewedAt,
+      },
+      evidence: (rule.sources ?? []).map((source, index) => ({
+        chunkId: `${rule.municipality ?? request.regionHint}-${rule.key}-${index + 1}`,
+        title: source.title,
+        url: source.url,
+      })),
       item: {
         name: detected.itemName ?? text(rule.itemName, locale),
         confidence: detected.confidence,

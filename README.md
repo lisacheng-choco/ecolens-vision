@@ -2,6 +2,10 @@
 
 EcoLens Vision is a Next.js app for AI-powered waste sorting. It combines deterministic Taiwan/Japan rules with an optional, source-grounded knowledge fallback.
 
+## Osaka POC
+
+The `poc/osaka` branch defaults to Traditional Chinese guidance for Osaka City household waste. Gemini identifies controlled item types; reviewed Osaka City rules determine disposal instructions and provide source links. The POC does not cover business waste, private building collection, or collection schedules.
+
 ## Features
 
 - Taiwan / Japan region switching
@@ -89,6 +93,7 @@ npm run eval -- --label hybrid --base-url https://staging.example.com --output /
 
 Each `--output <name>.json` also writes `<name>.md`. Use `--markdown-output <path>` to choose a different Markdown path.
 An existing JSON report can be converted without calling the model: `npm run eval -- --from-json /tmp/baseline.json`.
+For Gemini Free Tier evals, keep batches under 5 requests per minute per project or expect `429` rate-limit failures; do not loop-retry those within the same minute.
 
 The checked-in dataset is intentionally marked `seed`, not release-ready. See `docs/golden-dataset.md`.
 
@@ -106,6 +111,7 @@ Recommended flow:
 4. Run `npm run test:smoke` after deployment.
 
 See `docs/production-checklist.md` for the full checklist.
+See `docs/github-workflow.md` for the `lisacheng-choco` push / PR account flow.
 
 ## Test Images
 

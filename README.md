@@ -111,6 +111,7 @@ Recommended flow:
 4. Run `npm run test:smoke` after deployment.
 
 See `docs/production-checklist.md` for the full checklist.
+See `docs/github-workflow.md` for the `lisacheng-choco` push / PR account flow.
 
 ## Test Images
 
